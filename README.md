@@ -12,8 +12,19 @@
 
     Note: This file is included in `.gitignore` cos passwords shouldn't be shared
 
-# To run
+# To Run
 1. Change directory to `/App` in terminal
 2. Enter `node bin\www` in terminal
 3. Open browser and go to `localhost:3000`
 4. Remember to `Ctrl + c` when done to close server
+
+# Navigation Help
+## App folder
+Where we do the work
+- `app.js` is kindof like our "main" function
+- /routes : tldr is backend/communicates with database
+- /views : contains all the frontend stuff
+    - /partials : contains reusable frontend code
+
+## Database folder
+Just to hold our .sql files, files this folder does not interct with the app (yet idk). There is a seperate folder for the database that does in `App/database`. Files here probably helps to set up the database for the app.

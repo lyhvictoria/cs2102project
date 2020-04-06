@@ -1,22 +1,22 @@
 # Step by step dev guide
 Hopefully it's correct :)
 ## To add a new web page
- 1. In `App\app.js` , Add `var pageNameRouter = require('./routes/pageName');` to Page Routers Section
- 2. In `App\app.js`, Add `app.use('/pageName', pageNameRouter)` to Pages Section.
+ 1. In `App/app.js` , Add `var pageNameRouter = require('./routes/pageName');` to Page Routers Section
+ 2. In `App/app.js`, Add `app.use('/pageName', pageNameRouter)` to Pages Section.
  3. Create a file with name `pageName.js` in folder `App/routes`. This connects to database and gets stuff.
  4. Create a file with name `pageName.ejs` in folder `App/views/`. This is more or less the frontend.
  5. Add whatever functionality to that page by editing `pageName.js` & `pageName.ejs` as required.
- 6. Add page to Nav bar in `partials\navbar.ejs`
- 7. In `App\app.js`, Add page to Render Pages Section with code block below: 
+ 6. Add page to Nav bar in `partials/navbar.ejs`
+ 7. In `App/app.js`, Add page to Render Pages Section with code block below:
  ```javascript
  app.get('/pageName', (req, res) => {
 	res.render('pageName');
 });
 ```
 ## SQL Queries
-Include this code block in all `.js` files that require SQL
+Include this code block in all .js files that require SQL
 
- ```javascript
+```javascript
 var express = require('express');
 var router = express.Router();
 
@@ -34,7 +34,7 @@ Using the SQL query and the Pool, you can send the query to SQL using:
 SQL database.
 
 Example:
- ```javascript
+```javascript
 router.get('/', function(req, data) {
 	pool.query(sql_query.query.QUERY_FUNC_NAME, (err, data) => {
         // what you want it to do, example below will show users the select page and display all Users 
