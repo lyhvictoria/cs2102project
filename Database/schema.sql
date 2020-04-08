@@ -1,14 +1,16 @@
 Create extension "pgcrypto";
 
 Create table Customers (
-	customerId Integer, 
+	customerId Integer,
 	name varchar(100),
 	accumulatedPoints Integer default '0' not null,
 	usedPoints Integer default '0' not null,
-	beginMonth Integer default '1' check(beginMonth >= 1 and beginMonth <= 12) not null,
-	cardDetails varchar(200), 
+	beginMonth Integer default '1'
+		Check(beginMonth >= 1 and beginMonth <= 12) not null,
+	cardDetails varchar(200),
 	primary key (customerId),
-); 
+);
+
 
 Create table Reviews (
 	reviewId Integer,
@@ -19,10 +21,11 @@ Create table Reviews (
 	review varchar(200),
 	rating integer,
 	primary key (reviewId),
-	foreign key (orderId) references Order (orderId), 
-	foreign key (restaurantId) references Restaurant (restaurantId), 
+	foreign key (orderId) references Order (orderId),
+	foreign key (restaurantId) references Restaurant (restaurantId),
 	foreign key (riderId) references DeliveryRiders (riderId)
 );
+
 
 Create table Last_5_Dest (
 	customerId Integer,
@@ -35,6 +38,7 @@ Create table Last_5_Dest (
 	foreign key (customerId) references Customer(customerId) on delete cascade
 );
 
+
 Create table Employees (
 	employeeId Integer,
 	employmentType varchar (100),
@@ -43,23 +47,25 @@ Create table Employees (
 	primary key (employeeId)
 );
 
+
 Create table FDSManagers (
 	managerId Integer,
 	primary key (managerId),
 	foreign key (managerId) references Employees(employeeId) on delete cascade
 );
 
+
 Create table DeliveryRiders (
 	riderId Integer,
-
 	review varchar(200) references Reviews,
-	DeliveryFee integer not null default 5,
+	DeliveryFee Integer not null default 5,
 	primary key (riderId),
-	foreign Key (riderId) references Employees(employeeId) on delete cascade
+	foreign key (riderId) references Employees(employeeId) on delete cascade
 );
 
+
 Create table FullTimer (
-	riderId Integer references DeliveryRiders on delete cascade, 
+	riderId Integer references DeliveryRiders on delete cascade,
 	monthNum Integer,
 	workdayStart Integer,
 	workdayEnd Integer,
@@ -68,9 +74,11 @@ Create table FullTimer (
 	primary key (riderId, monthNum)
 );
 
+
 Create table PartTimer (
 	riderId Integer references DeliveryRiders on delete cascade,
-	day Integer,
+	day Integer
+		Check (day in (1,2,3,4,5,6,7)),
 	startHour Integer,
 	endHour Integer,
 	weekNum Integer,
@@ -84,67 +92,77 @@ Create table Shift (
 		Check (shiftNum in (1,2,3,4)),
 );
 
+
 Create table Promotion (
 	promotionId uuid default gen_random_uuid(),
 	startDate date not null,
 	endDate date not null,
-	discountPerc integer
+	discountPerc Integer
 		Check ((discount > 0) and (discount <= 100)),
-	discountAmt integer	
+	discountAmt Integer
 		Check (discountAmt > 0),
 	primary key (promotionId)	
 );
-	
+
+
 Create table FdsPromotion (
 	promotionId Integer,
-	Primary key (promotionId),
-	Foreign key (promotionId) references Promotion on delete cascade
+	primary key (promotionId),
+	foreign key (promotionId) references Promotion on delete cascade
 );
+
 
 Create table RestaurantPromotion (
 	promotionId Integer,
 	restaurantId Integer,
-	Primary key (promotionId),
-	Foreign key (promotionId) references Promotion,
-	Foreign key (restaurantId) references Restaurant
+	primary key (promotionId),
+	foreign key (promotionId) references Promotion on delete cascade,
+	foreign key (restaurantId) references Restaurant on delete cascade
 );
+
 
 Create table Restaurant (
 	restaurantId Integer,
 	area varchar(200),
 	name varchar(100),
-	minSpendingAmt integer default ‘0’ not null
+	minSpendingAmt Integer default ‘0’ not null,
 	primary key (restaurantId)
 );
-	
+
+
 Create table Menu (
 	restaurantId Integer,
 	itemId Integer,
 	itemName varchar(100) not null,
-	price double not null check (price > 0),
+	price Double not null
+		Check (price > 0),
 	category varchar(100) not null,
 	availability boolean,
-	dailyLimit integer default ‘100’ not null,
-	Primary key (restaurantId, itemId),
-	Foreign key (restaurantId) references Restaurant(restaurantId) on delete cascade
+	dailyLimit Integer default ‘100’ not null,
+	primary key (restaurantId, itemId),
+	foreign key (restaurantId) references Restaurant(restaurantId) on delete cascade
 );
+
 
 Create table Order (
 	orderId Integer,
+	customerId Integer,
 	riderId Integer,
 	restaurantId Integer,
 	dateOfOrder date not null,
 	timeOfOrder time not null,
 	deliveryLocationArea varchar(50),
-	totalCost double,
+	totalCost Double,
 	departureTimeToRestaurant time,
 	arrivialTimeAtRestaurant time,
 	departureTimeToDestination time,
 	arrivalTimeAtDestination time,
-	Primary key (orderId),
-	Foreign key (riderId) references DeliveryRiders(riderId) on delete cascade,
-	Foreign key (restaurantId) references Restaurant(restaurantId) on delete cascade
+	primary key (orderId),
+	foreign key (customerId) references Customers(customerId) on delete cascade,
+	foreign key (riderId) references DeliveryRiders(riderId) on delete cascade,
+	foreign key (restaurantId) references Restaurant(restaurantId) on delete cascade
 );
+
 
 Create table OrderDetails (
 	orderId Integer,
@@ -156,9 +174,9 @@ Create table OrderDetails (
 	pointObtained Integer default CAST(cost as Integer),
 	pointsRedeemed Integer default 0,
 	paymentMode varchar(50),
-	Primary key (orderId, itemId),
-	Foreign key (orderId) references Order(orderId) on delete cascade,
-	Foreign key (itemId) references Menu(itemId) on delete cascade,
-	Foreign key (FdsPromotionId) references FdsPromotion(FdsPromotionId) on delete cascade,
-	Foreign key (restaurantPromotionId) references Order(restaurantPromotionId) on delete cascade
+	primary key (orderId, itemId),
+	foreign key (orderId) references Order(orderId) on delete cascade,
+	foreign key (itemId) references Menu(itemId) on delete cascade,
+	foreign key (FdsPromotionId) references FdsPromotion(FdsPromotionId) on delete cascade,
+	foreign key (restaurantPromotionId) references Order(restaurantPromotionId) on delete cascade
 );
