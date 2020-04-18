@@ -2,14 +2,22 @@ Create extension "pgcrypto";
 
 Create table Customers (
 	customerId Integer,
-	name varchar(100),
+	first_name varchar(100),
+	last_name varchar(100),
 	accumulatedPoints Integer default '0' not null,
 	usedPoints Integer default '0' not null,
 	beginMonth Integer default '1'
 		Check(beginMonth >= 1 and beginMonth <= 12) not null,
-	cardDetails varchar(200),
 	primary key (customerId),
 );
+
+
+Create table CreditCards (
+	customerId Integer,
+	cardNumber varchar(200) not null,
+	primary key (cardNumber),
+	foreign key (customerId) references Customer(customerId) on delete cascade
+)
 
 
 Create table Reviews (
