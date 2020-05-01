@@ -28,3 +28,35 @@ insert into Customers (customerId, first_name, last_name, accumulatedPoints, use
 insert into Customers (customerId, first_name, last_name, accumulatedPoints, usedPoints, beginMonth) values (28, 'Fredelia', 'Buse', 636, 125, 8);
 insert into Customers (customerId, first_name, last_name, accumulatedPoints, usedPoints, beginMonth) values (29, 'Andonis', 'Partrick', 284, 331, 1);
 insert into Customers (customerId, first_name, last_name, accumulatedPoints, usedPoints, beginMonth) values (30, 'Moishe', 'Bray', 748, 436, 5);
+
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (1, "manager", 3500, "Aria");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (2, "fullRider", 1841, "Jack");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (3, "partRider", 500, "Leon");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (4, "manager", 3500, "Samuel");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (5, "fullRider", 1993, "Joseph");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (6, "partRider", 375, "Zachary");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (7, "manager", 3500, "Dylan");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (8, "fullRider", 1896, "Lewis");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (9, "partRider", 450, "Kieran");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (10, "manager", 3500, "Alex");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (11, "fullRider", 1851, "Ethan");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (12, "partRider", 650, "Bailey");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (13, "manager", 3500, "Isaac");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (14, "fullRider", 1838, "Ryan");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (15, "partRider", 360, "Sam");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (16, "manager", 3500, "Aaron");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (17, "fullRider", 1891, "Oscar");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (18, "partRider", 460, "Taylor");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (19, "manager", 3500, "Kai");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (20, "fullRider", 1809, "Archie");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (21, "partRider", 595, "Kian");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (22, "manager", 3500, "Ashton");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (23, "fullRider", 2098, "Callum");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (24, "partRider", 275, "Elliot");
+
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (25, "partRider", 665, "Blake");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (26, "fullRider", 1866, "Luke");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (27, "partRider", 690, "Ewan");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (28, "fullRider", 1990, "Jay");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (29, "fullRider", 1970, "Connor");
+insert into Employees (employeeId, employmentType, totalMonthlySalary, name) values (30, "partRider", 800, "Sean");
