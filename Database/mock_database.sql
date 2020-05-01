@@ -59,3 +59,8 @@ insert into CreditCards (customerId, cardNumber) values (27, '2762-7612-3464-987
 insert into CreditCards (customerId, cardNumber) values (28, '2734-5992-0004-7836');
 insert into CreditCards (customerId, cardNumber) values (29, '9589-7147-6482-2157');
 insert into CreditCards (customerId, cardNumber) values (30, '8396-7129-5984-5339');
+
+insert into Shifts (shiftNum) values (1);
+insert into Shifts (shiftNum) values (2);
+insert into Shifts (shiftNum) values (3);
+insert into Shifts (shiftNum) values (4);
