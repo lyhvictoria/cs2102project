@@ -29,6 +29,37 @@ insert into Customers (customerId, first_name, last_name, accumulatedPoints, use
 insert into Customers (customerId, first_name, last_name, accumulatedPoints, usedPoints, beginMonth) values (29, 'Andonis', 'Partrick', 284, 331, 1);
 insert into Customers (customerId, first_name, last_name, accumulatedPoints, usedPoints, beginMonth) values (30, 'Moishe', 'Bray', 748, 436, 5);
 
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (1, 'North', 'Burgils');
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (2, 'North', 'Spago');
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (3, 'North', 'Maxican Grills', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (4, 'North', 'The Gourmet Kitchen', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (5, 'North', 'Pink Sugar', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (6, 'North', 'Lord Of Fries', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (7, 'North', 'Thai Me Up Restaurant', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (8, 'North', 'Pho Shizzle', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (9, 'North', 'Ninja Akasaka', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (10, 'South', 'Chill Out', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (11, 'South', 'The Lockhart', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (12, 'South', 'Garden of Eat', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (13, 'South', 'Pies n Tighs', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (14, 'South', 'Dough Doughnuts', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (15, 'South', 'Pita Pans', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (16, 'South', 'Pot Au Feu', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (17, 'South', 'Duke Seafood', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (18, 'South', 'The French Gourmet', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (19, 'East', 'Little Pleasures', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (20, 'East', 'Planet O The Crepes', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (21, 'East', 'The Daily Cut', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (22, 'East', 'Wish You Were Beer', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (23, 'East', 'Burger & Beer Joint', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (24, 'East', 'Daily Grill', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (25, 'East', 'Hot & Crusty', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (26, 'West', 'The Deck', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (27, 'West', 'Waterbar Restaurant', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (28, 'West', 'Brewed Awakening', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (29, 'West', 'Mamas Fish House', 10);
+insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (30, 'West', 'The Egg & Us', 10);
+
 insert into CreditCards (customerId, cardNumber) values (1, '5027-8511-0125-0172');
 insert into CreditCards (customerId, cardNumber) values (2, '3060-0247-7129-9758');
 insert into CreditCards (customerId, cardNumber) values (3, '5818-8235-6693-8956');
