@@ -78,26 +78,27 @@ Create table Promotions (
 		and (discountPerc <= 100)
 	),
 	discountAmt Integer Check (discountAmt > 0),
+	minimumAmtSpent Integer Check (minimumAmtSpent > 0) default 0,
 	primary key (promotionId)
 );
 
 Create table FdsPromotions (
 	promotionId Integer,
 	primary key (promotionId),
-	foreign key (promotionId) references Promotions on delete cascade
+	foreign key (promotionId) references Promotions on delete cascade on update cascade
 );
 
 Create table RestaurantPromotions (
 	promotionId Integer,
 	restaurantId Integer,
 	primary key (promotionId),
-	foreign key (promotionId) references Promotions on delete cascade,
+	foreign key (promotionId) references Promotions on delete cascade on update cascade,
 	foreign key (restaurantId) references Restaurants on delete cascade
 );
 
 Create table Employees (
 	employeeId Integer,
-	employmentType varchar (100),
+	employmentType varchar (100) Check (employmentType in ("manager", "fullRider", "partRider")),
 	totalMonthlySalary Integer,
 	name varchar (50),
 	primary key (employeeId)
@@ -106,14 +107,14 @@ Create table Employees (
 Create table FDSManagers (
 	managerId Integer,
 	primary key (managerId),
-	foreign key (managerId) references Employees (employeeId) on delete cascade
+	foreign key (managerId) references Employees (employeeId) on delete cascade on update cascade
 );
 
 Create table DeliveryRiders (
 	riderId Integer,
 	deliveryFee Integer not null default 5,
 	primary key (riderId),
-	foreign key (riderId) references Employees (employeeId) on delete cascade
+	foreign key (riderId) references Employees (employeeId) on delete cascade on update cascade
 );
 
 Create table Shifts (
@@ -121,7 +122,7 @@ Create table Shifts (
 );
 
 Create table FullTimers (
-	riderId Integer references DeliveryRiders on delete cascade,
+	riderId Integer references DeliveryRiders on delete cascade on update cascade,
 	monthNum Integer,
 	workdayStart Integer,
 	workdayEnd Integer,
@@ -131,11 +132,11 @@ Create table FullTimers (
 );
 
 Create table PartTimers (
-	riderId Integer references DeliveryRiders on delete cascade,
+	riderId Integer references DeliveryRiders on delete cascade on update cascade,
 	workDay Integer Check (workDay in (1, 2, 3, 4, 5, 6, 7)),
 	startHour Integer,
 	endHour Integer,
-	weekNum Integer,
+	weekNum Integer Check (weekNum in (1, 2, 3, 4)),
 	baseSalary Integer not null default 100,
 	primary key (riderId, workDay, startHour, endHour, weekNum)
 );
@@ -155,8 +156,8 @@ Create table Orders (
 	arrivalTimeAtDestination time,
 	primary key (orderId),
 	foreign key (customerId) references Customers (customerId) on delete cascade,
-	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade,
-	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
+	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade on update cascade,
+	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade on update cascade
 );
 
 Create table OrderDetails (
@@ -170,8 +171,8 @@ Create table OrderDetails (
 	paymentMode varchar(50),
 	primary key (orderId, itemId),
 	foreign key (orderId) references Orders (orderId) on delete cascade,
-	foreign key (itemId) references Menus (itemId) on delete cascade,
-	foreign key (promotionId) references Promotions (promotionId) on delete cascade
+	foreign key (itemId) references Menus (itemId) on delete cascade on update cascade,
+	foreign key (promotionId) references Promotions (promotionId) on delete cascade on update cascade
 );
 
 create or replace function insert_default_points() returns trigger as $$
@@ -199,6 +200,6 @@ Create table Reviews (
 	rating integer,
 	primary key (reviewId),
 	foreign key (orderId) references Orders (orderId),
-	foreign key (restaurantId) references Restaurants (restaurantId),
-	foreign key (riderId) references DeliveryRiders (riderId)
+	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade on update cascade,
+	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade on update cascade
 );
