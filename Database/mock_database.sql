@@ -60,6 +60,37 @@ insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (28, 'W
 insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (29, 'West', 'Mamas Fish House', 10);
 insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (30, 'West', 'The Egg & Us', 10);
 
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (1, '2020-04-01', '2020-04-10', 20, 100);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (2, '2020-05-01', '2020-05-20', 25, 100);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (3, '2020-05-21', '2020-05-31', 10, 100);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (4, '2020-06-01', '2020-08-01', 5, 100);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (5, '2020-08-02', '2020-08-31', 15, 100);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (6, '2020-08-09', '2020-08-09', 30, 100);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (7, '2020-09-01', '2020-09-15', 35, 100, 10);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (8, '2020-09-16', '2020-10-05', 3, 100, 10);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (9, '2020-10-25', '2020-10-25', 12, 100, 10);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (10, '2020-11-01', '2020-11-08', 2, 100, 10);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (11, '2020-12-25', '2020-12-25', 20, 100, 20);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (12, '2020-12-24', '2020-12-24', 15, 100, 20);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (13, '2021-01-01', '2021-01-01', 35, 100, 5);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (14, '2020-12-31', '2020-12-31', 30, 100, 5);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (15, '2021-01-01', '2020-01-31', 5, 100, 15);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (16, '2021-04-01', '2021-05-01', 10, 100, 10);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (17, '2021-05-20', '2021-05-31', 12, 100, 10);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (18, '2021-06-10', '2021-06-15', 25, 100, 5);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (19, '2021-07-05', '2020-07-10', 30, 100, 5);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (20, '2021-07-31', '2021-08-10', 10, 100, 5);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (21, '2021-09-01', '2021-09-10', 15, 100, 12);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (22, '2021-10-01', '2021-10-01', 20, 100, 30);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (23, '2021-10-22', '2021-10-25', 5, 100, 35);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (24, '2021-11-01', '2020-11-06', 10, 100, 20);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (25, '2021-03-01', '2021-04-01', 50, 100, 25);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (26, '2021-04-04', '2021-04-04', 25, 100, 15);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (27, '2021-12-22', '2021-12-25', 10, 100, 5);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (28, '2022-01-01', '2020-05-01', 25, 100, 30);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (29, '2022-05-31', '2020-06-01', 15, 100);
+insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (30, '2022-10-01', '2022-11-01', 20, 100);
+
 insert into CreditCards (customerId, cardNumber) values (1, '5027-8511-0125-0172');
 insert into CreditCards (customerId, cardNumber) values (2, '3060-0247-7129-9758');
 insert into CreditCards (customerId, cardNumber) values (3, '5818-8235-6693-8956');
