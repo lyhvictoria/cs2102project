@@ -78,6 +78,7 @@ Create table Promotions (
 		and (discountPerc <= 100)
 	),
 	discountAmt Integer Check (discountAmt > 0),
+	minimumAmtSpent Integer Check (minimumAmtSpent > 0) default 0,
 	primary key (promotionId)
 );
 
