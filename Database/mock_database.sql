@@ -91,6 +91,37 @@ insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (28, 'W
 insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (29, 'West', 'Mamas Fish House', 10);
 insert into Restaurant (restaurantId, area, name, minSpendingAmt) values (30, 'West', 'The Egg & Us', 10);
 
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (1, 9, 'Gyudon', 15.2, 'Japanese', true, 124);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (2, 3, 'Tamagoyaki', 7.0, 'Japanese', true, 76);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (3, 28, 'Mushroom Risotto', 23.6, 'Italian', false, 226);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (4, 21, 'Kung Pow Chicken', 15.8, 'Chinese', false, 285);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (5, 30, 'Ma Po Tofu', 12.3, 'Chinese', false, 183);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (6, 26, 'Tonkatsu', 22.7, 'Japanese', true, 142);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (7, 4, 'Spring Rolls', 11.9, 'Chinese', true, 224);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (8, 9, 'Yangchow Fried Rice', 22.9, 'Chinese', false, 102);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (9, 14, 'Unagi Bento Set', 28.4, 'Japanese', false, 172);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (10, 27, 'Caprese Chicken', 28.1, 'Italian', true, 168);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (11, 8, 'Beef Ragu', 28.3, 'Italian', false, 248);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (12, 29, 'Sichuan Pork', 25.6, 'Chinese', true, 285);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (13, 16, 'Ricotta Spaghetti', 19.8, 'Italian', false, 140);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (14, 22, 'Braised Pork Meatballs', 19.6, 'Chinese', true, 104);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (15, 19, 'Yakisoba', 13.4, 'Japanese', false, 189);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (16, 23, 'Mac And Cheese', 9.2, 'Italian', false, 299);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (17, 11, 'Primavare Stuffed Chicken', 12.2, 'Italian', true, 261);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (18, 5, 'Chicken Chops', 19.9, 'Western', false, 24);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (19, 2, 'Cream Of Chicken Soup', 5.4, 'Western', false, 165);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (20, 9, 'Fish And Chips', 11.1, 'Western', true, 174);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (21, 1, 'Salted Fish Fried Rice', 5.7, 'Chinese', true, 152);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (22, 20, 'Sashimi Set', 25.7, 'Japanese', true, 212);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (23, 25, 'Cold Cha Soba', 16.0, 'Japanese', true, 260);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (24, 30, 'Chicken Cutlet Set', 17.1, 'Western', true, 295);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (25, 11, 'Cheesy Marinara', 17.6, 'Italian', true, 200);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (26, 11, 'Basil Rice', 8.7, 'Thai', true, 186);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (27, 3, 'Seafood Tom Yum Soup', 28.2, 'Thai', false, 121);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (28, 9, 'Green Papaya Salad', 9.6, 'Thai', true, 145);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (29, 23, 'Miso Ramen', 12.7, 'Japanese', true, 187);
+insert into Menus (itemId, resturantId, itemName, price, category, isAvaliable, dailyLimit) values (30, 8, 'Pad Thai', 11.9, 'Thai', false, 21);
+
 insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (1, '2020-04-01', '2020-04-10', 20, 100);
 insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (2, '2020-05-01', '2020-05-20', 25, 100);
 insert into Promotions (promoId, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (3, '2020-05-21', '2020-05-31', 10, 100);
