@@ -63,7 +63,7 @@ Create table Menus (
 	itemName varchar(100) not null,
 	price DOUBLE PRECISION not null Check (price > 0),
 	category varchar(100) not null,
-	availability boolean,
+	isAvailable boolean,
 	dailyLimit Integer default 100 not null,
 	primary key (itemId),
 	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
