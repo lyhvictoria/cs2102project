@@ -63,7 +63,7 @@ Create table Menus (
 	itemName varchar(100) not null,
 	price DOUBLE PRECISION not null Check (price > 0),
 	category varchar(100) not null,
-	availability boolean,
+	isAvailable boolean,
 	dailyLimit Integer default 100 not null,
 	primary key (itemId),
 	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
@@ -193,13 +193,8 @@ execute procedure insert_default_points();
 Create table Reviews (
 	reviewId Integer,
 	orderId Integer,
-	restaurantId Integer,
-	customerId Integer,
-	riderId Integer,
 	review varchar(200),
-	rating integer,
+	rating Integer Check (rating in (1, 2, 3, 4, 5)),
 	primary key (reviewId),
 	foreign key (orderId) references Orders (orderId),
-	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade on update cascade,
-	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade on update cascade
 );
