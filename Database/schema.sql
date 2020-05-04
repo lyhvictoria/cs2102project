@@ -228,6 +228,8 @@ begin
 	if amtLeft = 0 then
 		UPDATE Menus
 		SET isAvailable = false
+	end if;
+	RETURN NEW;
 end;
 $$ language plpgsql;
 
@@ -243,7 +245,7 @@ begin
 	if NEW.pointsObtained is null then
 		NEW.pointsObtain := NEW.orderCost;
 	end if;
-	return new;
+	return NEW;
 end;
 $$ language plpgsql;
 
