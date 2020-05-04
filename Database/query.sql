@@ -1,23 +1,23 @@
 /*General Function*/
-INSERT INTO Customers(customerId, first_name, last_name) VALUES ($1, $2, $3); //add customers
-INSERT INTO Employees (employeeId, employmentType) VALUES ($1, $2); //add Employees
-INSERT INTO FDSManagers (managerId) VALUES ($1); //add FDSManagers
-INSERT INTO DeliveryRiders (riderId) VALUES ($1); //add Delivery Riders
-INSERT INTO PartTimers (riderId) VALUES ($1); //add part timers
-INSERT INTO FullTimers (riderId) VALUES ($1); //add full timers
-DELTE FROM Customers where customerId = $1; //delete users
+INSERT INTO Customers(customerId, first_name, last_name) VALUES ($1, $2, $3); --add customers
+INSERT INTO Employees (employeeId, employmentType) VALUES ($1, $2); --add Employees
+INSERT INTO FDSManagers (managerId) VALUES ($1); --add FDSManagers
+INSERT INTO DeliveryRiders (riderId) VALUES ($1); --add Delivery Riders
+INSERT INTO PartTimers (riderId) VALUES ($1); --add part timers
+INSERT INTO FullTimers (riderId) VALUES ($1); --add full timers
+DELETE FROM Customers where customerId = $1; --delete users
 
 INSERT INTO Orders (orderId, CustomerId, riderId, restaurantId, dateOfOrder, timeOfOrder, deliveryLocationArea, totalCost, departureTimeToRestaurant, arrivialTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
 INSERT INTO Menu (itemId, restuarnatId, itemName, price, category, dailyLimit) VALUES ($1, $2, $3, $4, $5, $6);
 INSERT INTO Reviews (reviewId, orderId, review, rating) VALUES ($1, $2, $3, $4);
 
 /*Restaurant staff Functions*/
-SELECT itemName 
+SELECT itemName
 FROM Menus
 WHERE //see all menu items
 //filter by cuisine
 //set menus utems daily limit
-//update menu item information 
+//update menu item information
 //select promo
 
 /*Customer Functions*/
@@ -31,11 +31,16 @@ WHERE //see all menu items
 //select recent order
 //select promo
 //view review posting
+SELECT DISTINCT Res.name as Restaurant, O.dateOfOrder as OrderDate, Rev.review as Review, Rev.rating as Rating
+FROM Restaurant Res JOIN Orders O USING (restaurantId) JOIN Reviews Rev USING (orderId)
+ORDER BY Res.name
 //view past orders
+SELECT
+FROM
 
 /*Fds Manager Functions*/
 //select promo
-//select total number of orders delivered per rider per month 
+//select total number of orders delivered per rider per month
 //Select total number of hours worked rider/month
 //Select total salary earned rider/month
 //View total new customers/month
@@ -44,16 +49,24 @@ WHERE //see all menu items
 //View total number of orders/month/customer
 //View total cost of all orders/month/customer
 //View total number of orders/hour/location
+
+//View orders delivered for riders/month
+//View hours worked by rider/month
+//View total salary earned by rider/month
 //View average delivery time for rider/month
 //View total number of ratings for all orders received for rider/month
 //View average rating for rider/month
+
+
 
 /*Fds Rider Functions*/
 //Record time rider departs for restaurant
 //Record time rider arrives at the restaurant
 //Record time rider leaves the restaurant
 //Record the time the rider deliver the order
-//View past work schedule
+//View total orders for week by rider
+//View total orders for month by rider
+//View hours worked by rider/month
 //View past salaries
 //Select total number of orders delivered rider/month
 //Select total number of orders delivered rider/week
