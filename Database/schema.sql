@@ -64,7 +64,7 @@ Create table Menus (
 	price DOUBLE PRECISION not null Check (price > 0),
 	category varchar(100) not null,
 	isAvailable boolean,
-	dailyLimit Integer default 100 not null,
+	amtLeft Integer default 100 not null Check (amtLeft >= 0),
 	primary key (itemId),
 	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
 );
@@ -183,6 +183,61 @@ Create table OrderDetails (
 	foreign key (promotionId) references Promotions (promotionId) on delete cascade on update cascade
 );
 
+Create table Reviews (
+	reviewId Integer,
+	orderId Integer,
+	review varchar(200),
+	rating Integer Check (rating in (1, 2, 3, 4, 5)),
+	primary key (reviewId),
+	foreign key (orderId) references Orders (orderId),
+);
+
+/* TRIGGERS */
+-- Checks if order can go through
+create or replace function check_isAvailable() returns trigger as $$
+DECLARE currAvailAmt INTEGER;
+DECLARE qtyOrdered INTEGER;
+
+begin
+	NEW.quantity = qtyOrdered;
+	SELECT amtLeft as currAvailAmt
+	FROM Menus
+	WHERE itemId = NEW.itemId;
+
+	if currAvailAmt - qtyOrdered < 0 then
+		RETURN NULL; -- reject order (?)
+	else -- update amtLeft
+		UPDATE Menus M
+		SET amtLeft = amtLeft - qtyOrdered
+		WHERE M.itemId = NEW.itemId;
+
+		RETURN NEW;
+	end if;
+end;
+$$ language plpgsql;
+
+create trigger trig_check_isAvailable
+before insert or update
+on OrderDetails
+for each row
+execute procedure check_isAvailable();
+
+-- Auto sets item availibility if amtLeft changes 
+create or replace function update_isAvailable() returns trigger as $$
+begin
+	if amtLeft = 0 then
+		UPDATE Menus
+		SET isAvailable = false
+end;
+$$ language plpgsql;
+
+create trigger trig_update_isAvailable
+after insert or update
+on Menus
+for each row
+execute procedure update_isAvailable();
+
+-- Auto add rewards points
 create or replace function insert_default_points() returns trigger as $$
 begin
 	if NEW.pointsObtained is null then
@@ -197,12 +252,3 @@ before insert
 on OrderDetails
 for each row
 execute procedure insert_default_points();
-
-Create table Reviews (
-	reviewId Integer,
-	orderId Integer,
-	review varchar(200),
-	rating Integer Check (rating in (1, 2, 3, 4, 5)),
-	primary key (reviewId),
-	foreign key (orderId) references Orders (orderId),
-);
