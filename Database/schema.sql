@@ -159,7 +159,7 @@ Create table Orders (
 	deliveryLocationArea varchar(50),
 	totalCost DOUBLE PRECISION,
 	departureTimeToRestaurant time,
-	arrivialTimeAtRestaurant time,
+	arrivalTimeAtRestaurant time,
 	departureTimeToDestination time,
 	arrivalTimeAtDestination time,
 	paymentMode varchar(50) Check (paymentMode in 'Card', 'Cash'),
@@ -178,7 +178,7 @@ Create table OrderDetails (
 	pointsObtained Integer,
 	pointsRedeemed Integer default 0,
 	primary key (orderId, itemId),
-	foreign key (orderId) references Orders (orderId) on delete cascade,
+	foreign key (orderId) references Orders (orderId) on delete cascade deferrable initially deferred,
 	foreign key (itemId) references Menus (itemId) on delete cascade on update cascade,
 	foreign key (promotionId) references Promotions (promotionId) on delete cascade on update cascade
 );
@@ -222,7 +222,7 @@ on OrderDetails
 for each row
 execute function check_isAvailable();
 
--- Auto sets item availibility if amtLeft changes 
+-- Auto sets item availibility if amtLeft changes
 create or replace function update_isAvailable() returns trigger as $$
 begin
 	if amtLeft = 0 then
