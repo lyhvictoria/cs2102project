@@ -7,7 +7,7 @@ INSERT INTO PartTimers (riderId) VALUES ($1); --add part timers
 INSERT INTO FullTimers (riderId) VALUES ($1); --add full timers
 DELETE FROM Customers where customerId = $1; --delete users
 
-INSERT INTO Orders (orderId, CustomerId, riderId, restaurantId, dateOfOrder, timeOfOrder, deliveryLocationArea, totalCost, departureTimeToRestaurant, arrivialTimeAtRestaurant, departureTimeToDestiantion, arrivalTimeAtDestiantion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
+INSERT INTO Orders (orderId, CustomerId, riderId, restaurantId, dateOfOrder, timeOfOrder, deliveryLocationArea, totalCost, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
 
 /*Restaurant staff Functions*/
 -- See restaurant info
