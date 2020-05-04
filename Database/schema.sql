@@ -220,7 +220,7 @@ create trigger trig_check_isAvailable
 before insert or update
 on OrderDetails
 for each row
-execute procedure check_isAvailable();
+execute function check_isAvailable();
 
 -- Auto sets item availibility if amtLeft changes 
 create or replace function update_isAvailable() returns trigger as $$
@@ -235,7 +235,7 @@ create trigger trig_update_isAvailable
 after insert or update
 on Menus
 for each row
-execute procedure update_isAvailable();
+execute function update_isAvailable();
 
 -- Auto add rewards points
 create or replace function insert_default_points() returns trigger as $$
@@ -251,4 +251,4 @@ create trigger trig_insert_default_points
 before insert
 on OrderDetails
 for each row
-execute procedure insert_default_points();
+execute function insert_default_points();
