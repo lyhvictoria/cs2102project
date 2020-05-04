@@ -98,11 +98,19 @@ Create table RestaurantPromotions (
 
 Create table Employees (
 	employeeId Integer,
-	employmentType varchar (100) Check (employmentType in ("manager", "fullRider", "partRider")),
+	employmentType varchar (100) Check (employmentType in ("restaurantStaff","manager", "fullRider", "partRider")),
 	totalMonthlySalary Integer,
 	name varchar (50),
 	primary key (employeeId)
 );
+
+Create table RestaurantStaff (
+	restStaffId Integer,
+	restaurantId Integer,
+	primary key (restStaffId),
+	foreign key (restStaffId) references Employees (employeeId) on delete cascade on update cascade
+	foreign key (restaurantId) references Restaurants on delete cascade
+)
 
 Create table FdsManagers (
 	managerId Integer,
