@@ -74,11 +74,11 @@ Create table Promotions (
 	startDate date not null,
 	endDate date not null,
 	discountPerc Integer Check (
-		(discountPerc > 0)
+		(discountPerc >= 0)
 		and (discountPerc <= 100)
 	),
-	discountAmt Integer Check (discountAmt > 0),
-	minimumAmtSpent Integer Check (minimumAmtSpent > 0) default 0,
+	discountAmt Integer Check (discountAmt >= 0),
+	minimumAmtSpent Integer Check (minimumAmtSpent >= 0) default 0,
 	primary key (promotionId)
 );
 
@@ -243,7 +243,7 @@ execute function update_isAvailable();
 create or replace function insert_default_points() returns trigger as $$
 begin
 	if NEW.pointsObtained is null then
-		NEW.pointsObtain := NEW.orderCost;
+		NEW.pointsObtain := Round(NEW.orderCost);
 	end if;
 	return NEW;
 end;

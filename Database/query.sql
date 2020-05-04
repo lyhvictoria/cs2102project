@@ -37,7 +37,48 @@ WHERE itemId = $2
 ;
 -- Add menu item
 INSERT INTO Menu (itemId, restaurantId, itemName, price, category, amtLeft) VALUES ($1, $2, $3, $4, $5, $6);
--- Select promo
+-- See all orders (Delivered and Not)
+SELECT DISTINCT O.orderID, to_char(O.dateOfOrder, \'DD/MM/YYYY\') as date, O.deliveryLocationArea, OD.itemId, OD.quantity
+FROM Orders O INNER JOIN OrderDetails OD on O.orderId = OD.orderId
+WHERE O.restaurantID = $1
+ORDER BY O.dateOfOrder, O.timeOfOrder, O.orderId, OD.itemId
+;
+-- See all outgoing order items (Undelivered)
+SELECT DISTINCT O.orderID, to_char(O.dateOfOrder, \'DD/MM/YYYY\') as date, O.deliveryLocationArea, OD.itemId, OD.quantity
+FROM Orders O INNER JOIN OrderDetails OD on O.orderId = OD.orderId
+WHERE O.departureTimeToDestination IS NULL AND O.restaurantID = $1
+ORDER BY O.dateOfOrder, O.timeOfOrder, O.orderId, OD.itemId
+;
+-- Summary Info (For each month)
+-- 1) Total number of completed orders
+-- 2) Total cost of all completed orders (excluding delivery fees)
+SELECT year, month, COUNT(orderId) AS totalorders, SUM(cost) As totalcost
+FROM (
+    SELECT DISTINCT EXTRACT(YEAR FROM (O.dateOfOrder)) AS year, EXTRACT(MONTH FROM (O.dateOfOrder)) as month, O.orderid, O.totalCost
+    FROM Orders O
+    WHERE O.arrivalTimeAtDestination <> NULL --completed order
+    AND O.restaurantID = $1
+    AND EXTRACT(YEAR FROM (O.dateOfOrder)) = $2 AND EXTRACT(MONTH FROM (O.dateOfOrder)) = $3 )
+GROUP BY year, month
+;
+-- 3) Top 5 favorite food items (in terms of the number of orders for that item)
+WITH TopFiveFoodItems (year, month, itemId, totalOrders) AS (
+    SELECT DISTINCT EXTRACT(YEAR FROM (O.dateOfOrder)) AS year, EXTRACT(MONTH FROM (O.dateOfOrder)) as month,
+                    OD.itemId as itemId, SUM(OD.quantity) as totalOrders
+    FROM OrderDetails OD INNER JOIN Orders O on OD.orderId = O.orderId
+    WHERE O.arrivalTimeAtDestination <> NULL --completed order
+    AND FM.restaurantID = $1
+    GROUP BY year, month, food
+    ORDER BY totalOrders DESC
+    LIMIT 5
+)
+SELECT DISTINCT year, month, itemId, itemName, totalOrders
+FROM TopFiveFoodItems F INNER JOIN Menus M on F.itemId = M.itemId
+;
+-- Add new resturant promo
+-- Summary Info (For each promotional campaign)
+-- 1) Duration of campaign (Num of days/hrs)
+-- 2) Ave orders recieved during promotion (Ratio of total orders vs campaign duration)
 
 
 
