@@ -14,60 +14,60 @@ INSERT INTO Reviews (reviewId, orderId, review, rating) VALUES ($1, $2, $3, $4);
 /*Restaurant staff Functions*/
 SELECT itemName
 FROM Menus
-WHERE //see all menu items
-//filter by cuisine
-//set menus utems daily limit
-//update menu item information
-//select promo
+WHERE --see all menu items
+--filter by cuisine
+--set menus utems daily limit
+--update menu item information
+--select promo
 
 /*Customer Functions*/
-//select restaurant from list
-//see all menu items
-//add menu items to order
-//filter by cuisine
-//select price range
-//select payment method
-//enter card number (if payment by card)
-//select recent order
-//select promo
-//view review posting
+--select restaurant from list
+--see all menu items
+--add menu items to order
+--filter by cuisine
+--select price range
+--select payment method
+--enter card number (if payment by card)
+--select recent order
+--select promo
+--view review posting
 SELECT DISTINCT Res.name as Restaurant, O.dateOfOrder as OrderDate, Rev.review as Review, Rev.rating as Rating
 FROM Restaurant Res JOIN Orders O USING (restaurantId) JOIN Reviews Rev USING (orderId)
 ORDER BY Res.name
-//view past orders
-SELECT
-FROM
+--view past orders
+SELECT as OrderDate, as Restaurant, as ItemName, as Quantity
+FROM Orders O JOIN 
 
 /*Fds Manager Functions*/
-//select promo
-//select total number of orders delivered per rider per month
-//Select total number of hours worked rider/month
-//Select total salary earned rider/month
-//View total new customers/month
-//View total number of orders/month
-//View total cost of all orders/month
-//View total number of orders/month/customer
-//View total cost of all orders/month/customer
-//View total number of orders/hour/location
+--select promo
+--select total number of orders delivered per rider per month
+--Select total number of hours worked rider/month
+--Select total salary earned rider/month
+--View total new customers/month
+--View total number of orders/month
+--View total cost of all orders/month
+--View total number of orders/month/customer
+--View total cost of all orders/month/customer
+--View total number of orders/hour/location
 
-//View orders delivered for riders/month
-//View hours worked by rider/month
-//View total salary earned by rider/month
-//View average delivery time for rider/month
-//View total number of ratings for all orders received for rider/month
-//View average rating for rider/month
+--View orders delivered for riders/month
+--View hours worked by rider/month
+--View total salary earned by rider/month
+--View average delivery time for rider/month
+--View total number of ratings for all orders received for rider/month
+--View average rating for rider/month
 
 
 
 /*Fds Rider Functions*/
-//Record time rider departs for restaurant
-//Record time rider arrives at the restaurant
-//Record time rider leaves the restaurant
-//Record the time the rider deliver the order
-//View total orders for week by rider
-//View total orders for month by rider
-//View hours worked by rider/month
-//View past salaries
-//Select total number of orders delivered rider/month
-//Select total number of orders delivered rider/week
-//Select total number of hours worked rider/month
+--Record time rider departs for restaurant
+--Record time rider arrives at the restaurant
+--Record time rider leaves the restaurant
+--Record the time the rider deliver the order
+--View total orders for week by rider
+--View total orders for month by rider
+--View hours worked by rider/month
+--View past salaries
+--Select total number of orders delivered rider/month
+--Select total number of orders delivered rider/week
+--Select total number of hours worked rider/month
