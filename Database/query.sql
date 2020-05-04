@@ -82,7 +82,9 @@ WHERE O.customerId = $1
 ORDER BY O.dateOfOrder
 ;
 -- Add menu items to order
-INSERT INTO OrderDetails (orderId, itemID, quantity, promotionId, orderCost, pointsObtained, pointsRedeemed) VALUES ($1, $2, $3, $4, $5, $6, $7);
+--BEGIN;
+--INSERT INTO OrderDetails (orderId, itemID, quantity, promotionId, orderCost, pointsObtained, pointsRedeemed) VALUES ($1, $2, $3, $4, $5, $6, $7);
+
 -- select price range
 SELECT R.name as RestaurantName, minSpendingAmt, itemName, price, isAvailable, minSpendingAmt
 FROM Menus M JOIN Restaurants R ON (M.restaurantId = R.restaurantId)
