@@ -64,7 +64,7 @@ Create table Menus (
 	price DOUBLE PRECISION not null Check (price > 0),
 	category varchar(100) not null,
 	isAvailable boolean,
-	dailyLimit Integer default 100 not null,
+	amtLeft Integer default 100 not null Check (amtLeft >= 0),
 	primary key (itemId),
 	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
 );
@@ -98,11 +98,19 @@ Create table RestaurantPromotions (
 
 Create table Employees (
 	employeeId Integer,
-	employmentType varchar (100) Check (employmentType in ("manager", "fullRider", "partRider")),
+	employmentType varchar (100) Check (employmentType in ("restaurantStaff","manager", "fullRider", "partRider")),
 	totalMonthlySalary Integer,
 	name varchar (50),
 	primary key (employeeId)
 );
+
+Create table RestaurantStaff (
+	restStaffId Integer,
+	restaurantId Integer,
+	primary key (restStaffId),
+	foreign key (restStaffId) references Employees (employeeId) on delete cascade on update cascade
+	foreign key (restaurantId) references Restaurants on delete cascade
+)
 
 Create table FdsManagers (
 	managerId Integer,
@@ -154,6 +162,7 @@ Create table Orders (
 	arrivialTimeAtRestaurant time,
 	departureTimeToDestination time,
 	arrivalTimeAtDestination time,
+	paymentMode varchar(50) Check (paymentMode in 'Card', 'Cash'),
 	primary key (orderId),
 	foreign key (customerId) references Customers (customerId) on delete cascade,
 	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade on update cascade,
@@ -168,27 +177,11 @@ Create table OrderDetails (
 	orderCost DOUBLE PRECISION,
 	pointsObtained Integer,
 	pointsRedeemed Integer default 0,
-	paymentMode varchar(50),
 	primary key (orderId, itemId),
 	foreign key (orderId) references Orders (orderId) on delete cascade,
 	foreign key (itemId) references Menus (itemId) on delete cascade on update cascade,
 	foreign key (promotionId) references Promotions (promotionId) on delete cascade on update cascade
 );
-
-create or replace function insert_default_points() returns trigger as $$
-begin
-	if NEW.pointsObtained is null then
-		NEW.pointsObtain := NEW.orderCost;
-	end if;
-	return new;
-end;
-$$ language plpgsql;
-
-create trigger trig_insert_default_points
-before insert
-on OrderDetails
-for each row
-execute procedure insert_default_points();
 
 Create table Reviews (
 	reviewId Integer,
@@ -198,3 +191,66 @@ Create table Reviews (
 	primary key (reviewId),
 	foreign key (orderId) references Orders (orderId),
 );
+
+/* TRIGGERS */
+-- Checks if order can go through
+create or replace function check_isAvailable() returns trigger as $$
+DECLARE currAvailAmt INTEGER;
+DECLARE qtyOrdered INTEGER;
+
+begin
+	NEW.quantity = qtyOrdered;
+	SELECT amtLeft as currAvailAmt
+	FROM Menus
+	WHERE itemId = NEW.itemId;
+
+	if currAvailAmt - qtyOrdered < 0 then
+		RETURN NULL; -- reject order (?)
+	else -- update amtLeft
+		UPDATE Menus M
+		SET amtLeft = amtLeft - qtyOrdered
+		WHERE M.itemId = NEW.itemId;
+
+		RETURN NEW;
+	end if;
+end;
+$$ language plpgsql;
+
+create trigger trig_check_isAvailable
+before insert or update
+on OrderDetails
+for each row
+execute function check_isAvailable();
+
+-- Auto sets item availibility if amtLeft changes 
+create or replace function update_isAvailable() returns trigger as $$
+begin
+	if amtLeft = 0 then
+		UPDATE Menus
+		SET isAvailable = false
+	end if;
+	RETURN NEW;
+end;
+$$ language plpgsql;
+
+create trigger trig_update_isAvailable
+after insert or update
+on Menus
+for each row
+execute function update_isAvailable();
+
+-- Auto add rewards points
+create or replace function insert_default_points() returns trigger as $$
+begin
+	if NEW.pointsObtained is null then
+		NEW.pointsObtain := NEW.orderCost;
+	end if;
+	return NEW;
+end;
+$$ language plpgsql;
+
+create trigger trig_insert_default_points
+before insert
+on OrderDetails
+for each row
+execute function insert_default_points();
