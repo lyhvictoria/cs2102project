@@ -63,8 +63,8 @@ Create table Menus (
 	itemName varchar(100) not null,
 	price DOUBLE PRECISION not null Check (price > 0),
 	category varchar(100) not null,
-	availability boolean,
-	dailyLimit Integer default 100 not null,
+	isAvailable boolean,
+	amtLeft Integer default 100 not null Check (amtLeft >= 0),
 	primary key (itemId),
 	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
 );
@@ -74,46 +74,55 @@ Create table Promotions (
 	startDate date not null,
 	endDate date not null,
 	discountPerc Integer Check (
-		(discountPerc > 0)
+		(discountPerc >= 0)
 		and (discountPerc <= 100)
 	),
-	discountAmt Integer Check (discountAmt > 0),
+	discountAmt Integer Check (discountAmt >= 0),
+	minimumAmtSpent Integer Check (minimumAmtSpent >= 0) default 0,
 	primary key (promotionId)
 );
 
 Create table FdsPromotions (
 	promotionId Integer,
 	primary key (promotionId),
-	foreign key (promotionId) references Promotions on delete cascade
+	foreign key (promotionId) references Promotions on delete cascade on update cascade
 );
 
 Create table RestaurantPromotions (
 	promotionId Integer,
 	restaurantId Integer,
 	primary key (promotionId),
-	foreign key (promotionId) references Promotions on delete cascade,
+	foreign key (promotionId) references Promotions on delete cascade on update cascade,
 	foreign key (restaurantId) references Restaurants on delete cascade
 );
 
 Create table Employees (
 	employeeId Integer,
-	employmentType varchar (100),
+	employmentType varchar (100) Check (employmentType in ("restaurantStaff","manager", "fullRider", "partRider")),
 	totalMonthlySalary Integer,
 	name varchar (50),
 	primary key (employeeId)
 );
 
-Create table FDSManagers (
+Create table RestaurantStaff (
+	restStaffId Integer,
+	restaurantId Integer,
+	primary key (restStaffId),
+	foreign key (restStaffId) references Employees (employeeId) on delete cascade on update cascade
+	foreign key (restaurantId) references Restaurants on delete cascade
+)
+
+Create table FdsManagers (
 	managerId Integer,
 	primary key (managerId),
-	foreign key (managerId) references Employees (employeeId) on delete cascade
+	foreign key (managerId) references Employees (employeeId) on delete cascade on update cascade
 );
 
 Create table DeliveryRiders (
 	riderId Integer,
 	deliveryFee Integer not null default 5,
 	primary key (riderId),
-	foreign key (riderId) references Employees (employeeId) on delete cascade
+	foreign key (riderId) references Employees (employeeId) on delete cascade on update cascade
 );
 
 Create table Shifts (
@@ -121,21 +130,21 @@ Create table Shifts (
 );
 
 Create table FullTimers (
-	riderId Integer references DeliveryRiders on delete cascade,
+	riderId Integer references DeliveryRiders on delete cascade on update cascade,
 	monthNum Integer,
-	workdayStart Integer,
-	workdayEnd Integer,
-	shiftNum Integer,
+	workdayStart Integer Check (workdayStart in (1, 2, 3, 4, 5, 6, 7)),
+	workdayEnd Integer Check (workdayEnd in (1, 2, 3, 4, 5, 6, 7)),
+	shiftNum Integer references,
 	baseSalary Integer not null default 1700,
 	primary key (riderId, monthNum)
 );
 
 Create table PartTimers (
-	riderId Integer references DeliveryRiders on delete cascade,
+	riderId Integer references DeliveryRiders on delete cascade on update cascade,
 	workDay Integer Check (workDay in (1, 2, 3, 4, 5, 6, 7)),
 	startHour Integer,
 	endHour Integer,
-	weekNum Integer,
+	weekNum Integer Check (weekNum in (1, 2, 3, 4)),
 	baseSalary Integer not null default 100,
 	primary key (riderId, workDay, startHour, endHour, weekNum)
 );
@@ -150,13 +159,14 @@ Create table Orders (
 	deliveryLocationArea varchar(50),
 	totalCost DOUBLE PRECISION,
 	departureTimeToRestaurant time,
-	arrivialTimeAtRestaurant time,
+	arrivalTimeAtRestaurant time,
 	departureTimeToDestination time,
 	arrivalTimeAtDestination time,
+	paymentMode varchar(50) Check (paymentMode in 'Card', 'Cash'),
 	primary key (orderId),
 	foreign key (customerId) references Customers (customerId) on delete cascade,
-	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade,
-	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
+	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade on update cascade,
+	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade on update cascade
 );
 
 Create table OrderDetails (
@@ -167,19 +177,75 @@ Create table OrderDetails (
 	orderCost DOUBLE PRECISION,
 	pointsObtained Integer,
 	pointsRedeemed Integer default 0,
-	paymentMode varchar(50),
 	primary key (orderId, itemId),
-	foreign key (orderId) references Orders (orderId) on delete cascade,
-	foreign key (itemId) references Menus (itemId) on delete cascade,
-	foreign key (promotionId) references Promotions (promotionId) on delete cascade
+	foreign key (orderId) references Orders (orderId) on delete cascade deferrable initially deferred,
+	foreign key (itemId) references Menus (itemId) on delete cascade on update cascade,
+	foreign key (promotionId) references Promotions (promotionId) on delete cascade on update cascade
 );
 
+Create table Reviews (
+	reviewId Integer,
+	orderId Integer,
+	review varchar(200),
+	rating Integer Check (rating in (1, 2, 3, 4, 5)),
+	primary key (reviewId),
+	foreign key (orderId) references Orders (orderId),
+);
+
+/* TRIGGERS */
+-- Checks if order can go through
+create or replace function check_isAvailable() returns trigger as $$
+DECLARE currAvailAmt INTEGER;
+DECLARE qtyOrdered INTEGER;
+
+begin
+	NEW.quantity = qtyOrdered;
+	SELECT amtLeft as currAvailAmt
+	FROM Menus
+	WHERE itemId = NEW.itemId;
+
+	if currAvailAmt - qtyOrdered < 0 then
+		RETURN NULL; -- reject order (?)
+	else -- update amtLeft
+		UPDATE Menus M
+		SET amtLeft = amtLeft - qtyOrdered
+		WHERE M.itemId = NEW.itemId;
+
+		RETURN NEW;
+	end if;
+end;
+$$ language plpgsql;
+
+create trigger trig_check_isAvailable
+before insert or update
+on OrderDetails
+for each row
+execute function check_isAvailable();
+
+-- Auto sets item availibility if amtLeft changes
+create or replace function update_isAvailable() returns trigger as $$
+begin
+	if amtLeft = 0 then
+		UPDATE Menus
+		SET isAvailable = false
+	end if;
+	RETURN NEW;
+end;
+$$ language plpgsql;
+
+create trigger trig_update_isAvailable
+after insert or update
+on Menus
+for each row
+execute function update_isAvailable();
+
+-- Auto add rewards points
 create or replace function insert_default_points() returns trigger as $$
 begin
 	if NEW.pointsObtained is null then
-		NEW.pointsObtain := NEW.orderCost;
+		NEW.pointsObtain := Round(NEW.orderCost);
 	end if;
-	return new;
+	return NEW;
 end;
 $$ language plpgsql;
 
@@ -187,18 +253,4 @@ create trigger trig_insert_default_points
 before insert
 on OrderDetails
 for each row
-execute procedure insert_default_points();
-
-Create table Reviews (
-	reviewId Integer,
-	orderId Integer,
-	restaurantId Integer,
-	customerId Integer,
-	riderId Integer,
-	review varchar(200),
-	rating integer,
-	primary key (reviewId),
-	foreign key (orderId) references Orders (orderId),
-	foreign key (restaurantId) references Restaurants (restaurantId),
-	foreign key (riderId) references DeliveryRiders (riderId)
-);
+execute function insert_default_points();
