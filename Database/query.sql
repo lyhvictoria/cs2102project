@@ -16,18 +16,18 @@ FROM Restaurants INNER JOIN RestaurantStaff RS on R.restaurantId =  RS.restauran
 WHERE RS.restaurantId = $1 LIMIT 1
 ;
 -- See all menu items
-SELECT DISTINCT itemId, itemName, price, category, isAvailable, dailyLimit
+SELECT DISTINCT itemId, itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1
 ;
 -- Filter by cuisine
-SELECT DISTINCT itemId, itemName, price, category, isAvailable, dailyLimit
+SELECT DISTINCT itemId, itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1 AND category = $2
 ;
 -- Set menus items daily limit
 UPDATE Menus
-SET dailyLimit = $1
+SET amtLeft = $1
 WHERE itemId = $2
 ;
 -- Update menu item price
@@ -36,7 +36,7 @@ SET price = $1
 WHERE itemId = $2
 ;
 -- Add menu item
-INSERT INTO Menu (itemId, restaurantId, itemName, price, category, dailyLimit) VALUES ($1, $2, $3, $4, $5, $6);
+INSERT INTO Menu (itemId, restaurantId, itemName, price, category, amtLeft) VALUES ($1, $2, $3, $4, $5, $6);
 -- Select promo
 
 
@@ -57,12 +57,12 @@ FROM Restaurants
 WHERE restaurantId = $1
 ;
 -- See all menu items for selected restaurant
-SELECT DISTINCT itemId, itemName, price, category, isAvailable, dailyLimit
+SELECT DISTINCT itemId, itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1
 ;
 -- Filter by cuisine
-SELECT DISTINCT itemId, itemName, price, category, isAvailable, dailyLimit
+SELECT DISTINCT itemId, itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1 AND category = $2
 ;
