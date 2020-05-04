@@ -227,7 +227,7 @@ execute function check_isAvailable();
 -- Auto sets item availibility if amtLeft changes 
 create or replace function update_isAvailable() returns trigger as $$
 begin
-	if amtLeft = 0 then
+	if NEW.amtLeft = 0 then
 		UPDATE Menus
 		SET isAvailable = false;
 	end if;
