@@ -104,7 +104,7 @@ Create table Employees (
 	primary key (employeeId)
 );
 
-Create table FDSManagers (
+Create table FdsManagers (
 	managerId Integer,
 	primary key (managerId),
 	foreign key (managerId) references Employees (employeeId) on delete cascade on update cascade
@@ -124,9 +124,9 @@ Create table Shifts (
 Create table FullTimers (
 	riderId Integer references DeliveryRiders on delete cascade on update cascade,
 	monthNum Integer,
-	workdayStart Integer,
-	workdayEnd Integer,
-	shiftNum Integer,
+	workdayStart Integer Check (workdayStart in (1, 2, 3, 4, 5, 6, 7)),
+	workdayEnd Integer Check (workdayEnd in (1, 2, 3, 4, 5, 6, 7)),
+	shiftNum Integer references,
 	baseSalary Integer not null default 1700,
 	primary key (riderId, monthNum)
 );
@@ -193,13 +193,8 @@ execute procedure insert_default_points();
 Create table Reviews (
 	reviewId Integer,
 	orderId Integer,
-	restaurantId Integer,
-	customerId Integer,
-	riderId Integer,
 	review varchar(200),
-	rating integer,
+	rating Integer Check (rating in (1, 2, 3, 4, 5)),
 	primary key (reviewId),
 	foreign key (orderId) references Orders (orderId),
-	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade on update cascade,
-	foreign key (riderId) references DeliveryRiders (riderId) on delete cascade on update cascade
 );
