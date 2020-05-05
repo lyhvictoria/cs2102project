@@ -1,5 +1,6 @@
 Create extension IF NOT EXISTS "pgcrypto";
 
+DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS Customers CASCADE;
 DROP TABLE IF EXISTS CreditCards CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
@@ -19,17 +20,22 @@ DROP TABLE IF EXISTS Menus CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS OrderDetails CASCADE;
 
+Create table Users (
+	uid INT GENERATED ALWAYS AS IDENTITY,
+	name varchar(100) not null,
+	username varchar(100) not null,
+	password varchar(100) not null,
+	type varchar(100) not null Check(type in ('Customer', 'FDSManager', 'RestaurantStaff', 'DeliveryRider')),
+	primary key (uid)
+);
+
 Create table Customers (
 	customerId Integer,
-	first_name varchar(100),
-	last_name varchar(100),
-	accumulatedPoints Integer default 0 not null,
-	usedPoints Integer default 0 not null,
-	beginMonth Integer default 1 Check(
-		beginMonth >= 1
-		and beginMonth <= 12
-	) not null,
-	primary key (customerId)
+	name varchar(100),
+	rewardPoints Integer default 0 not null,
+	startDate DATE default CURRENT_DATE not null,
+	primary key (customerId),
+	foreign key (customerId) references Users (uid) on delete cascade
 );
 
 Create table CreditCards (
@@ -97,33 +103,26 @@ Create table RestaurantPromotions (
 	foreign key (restaurantId) references Restaurants on delete cascade
 );
 
-Create table Employees (
-	employeeId Integer,
-	employmentType varchar (100) Check (employmentType in ('restaurantStaff', 'manager', 'fullRider', 'partRider')),
-	totalMonthlySalary Integer,
-	name varchar (50),
-	primary key (employeeId)
-);
-
 Create table RestaurantStaff (
 	restStaffId Integer,
 	restaurantId Integer,
 	primary key (restStaffId),
-	foreign key (restStaffId) references Employees (employeeId) on delete cascade on update cascade,
+	foreign key (restStaffId) references Users (uid) on delete cascade on update cascade,
 	foreign key (restaurantId) references Restaurants on delete cascade
 );
 
 Create table FdsManagers (
 	managerId Integer,
 	primary key (managerId),
-	foreign key (managerId) references Employees (employeeId) on delete cascade on update cascade
+	foreign key (managerId) references Users (uid) on delete cascade on update cascade
 );
 
 Create table DeliveryRiders (
 	riderId Integer,
+	type varchar(100) not null Check (type in ('FullTime', 'PartTime')),
 	deliveryFee Integer not null default 5,
 	primary key (riderId),
-	foreign key (riderId) references Employees (employeeId) on delete cascade on update cascade
+	foreign key (riderId) references Users (uid) on delete cascade on update cascade
 );
 
 Create table Shifts (
