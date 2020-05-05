@@ -67,6 +67,7 @@ Create table Menus (
 	isAvailable boolean,
 	amtLeft Integer not null Check (amtLeft >= 0) default 100,
 	primary key (itemId),
+	UNIQUE (restaurantId, itemName),
 	foreign key (restaurantId) references Restaurants (restaurantId) on delete cascade
 );
 

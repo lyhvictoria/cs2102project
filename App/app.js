@@ -3,12 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require('dotenv').config();
 
 /* -------Page Routers-------- */
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var aboutRouter = require('./routes/about');
 var selectRouter = require('./routes/select'); // database connect
+var c_rest_displayRouter = require('./routes/c_rest_display');
 /* ---------------------------- */
 
 var app = express();
@@ -28,6 +30,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/about', aboutRouter);
 app.use('/select', selectRouter); // database connect
+app.use('/c_rest_display', c_rest_displayRouter);
 /* ---------------------------- */
 
 /* ----- Error Handler Section ----- */
@@ -55,6 +58,10 @@ app.get('/', (req, res) => {
 
 app.get('/about', (req, res) => {
 	res.render('about');
+});
+
+app.get('/c_rest_display', (req, res) => {
+	res.render('c_rest_display');
 });
 /* ---------------------------- */
 
