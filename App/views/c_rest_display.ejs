@@ -1,0 +1,119 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<div class="container">
+    <h1>Restaurants</h1>
+
+    <div class="col-auto my-1">
+        <form id="getRest" action="/c_rest_display/getRest" role="form" method="post">
+            <label for="order"><strong>Select Restaurant</strong></label>
+            <select class="custom-select mr-sm-2" id="restId" name='restId'>
+                <% for(var i=0; i< restList.length; i++) { %>
+                <option value="<%= i+1 %>"><%= restList[i].name%></option>
+                <% } %>
+            </select>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <div class="col-auto my-1">
+        <h2>Restauarnt Infomation</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ResturantId</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Area</th>
+                    <th scope="col">MinSpendingAmt</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i< restInfo.length; i++) { %>
+                <tr>
+                    <td><%= restInfo[i].restaurantid %></td>
+                    <td><%= restInfo[i].name %></td>
+                    <td><%= restInfo[i].area %></td>
+                    <td><%= restInfo[i].minspendingamt %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-auto my-1">
+        <h2>Restaurant Menu</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Food Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Amount Left</th>
+                    <th scope="col">Avaliablity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i< menuInfo.length; i++) { %>
+                <tr>
+                    <td><%= menuInfo[i].itemname %></td>
+                    <td><%= menuInfo[i].price %></td>
+                    <td><%= menuInfo[i].category %></td>
+                    <td><%= menuInfo[i].amtleft %></td>
+                    <td><%= menuInfo[i].isavailable ? 'yes' : 'no' %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Order From This Restaurant</h2>
+    <form id="addOrder" action="/c_rest_display/addOrder" role="form" method="post">
+        <label for="order"><strong>Current Order</strong></label>
+        <table class="table" id='currOrder'>
+            <thead>
+                <tr>
+                    <th scope="col">Food Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i < currOrder.length; i++) { %>
+                <tr>
+                    <td><%= currOrder[i].itemname%></td>
+                    <td><%= currOrder[i].price%></td>
+                    <td><%= currOrder[i].quantity%></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <h3>Select Item Name and Quantity</h3>
+        <select class="custom-select mr-sm-2" id="orderItemName" name='orderItemName'>
+            <% for(var i=0; i< menuInfo.length; i++) { %>
+            <option value="<%= menuInfo[i].itemname %>"><%= menuInfo[i].itemname %></option>
+            <% } %>
+        </select>
+        <select class="custom-select mr-sm-2" id="orderQuantity" name='orderQuantity'>
+            <% for(var i = 1; i < 10; i++) { %>
+            <option value="<%=i%>"><%=i%></option>
+            <% } %>
+        </select>
+        <button type="submit" class="btn btn-primary">Add To Order</button>
+        <button onclick="submitOrder()" class="btn btn-primary">Submit Order</button>
+    </form>
+</div>
+
+</html>
+
+<script>
+    function submitOrder() {
+        document.getElementById("addOrder").action = "/c_rest_display/submitOrder";
+        $('#addOrder').submit();
+    }
+</script>
+<%- include('partials/footer') %>
