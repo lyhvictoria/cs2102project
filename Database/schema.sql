@@ -202,7 +202,7 @@ DECLARE qtyOrdered INTEGER;
 
 begin
 	NEW.quantity = qtyOrdered;
-	SELECT amtLeft as currAvailAmt
+	PERFORM amtLeft as currAvailAmt
 	FROM Menus
 	WHERE itemId = NEW.itemId;
 
