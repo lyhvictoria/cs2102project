@@ -472,3 +472,20 @@ INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-17', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-18', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-19', 1, 0);
+
+-- Create 5 Orders
+insert into Orders (customerID, orderDate, deliveryLocation, deliveryLocationArea, totalCost,  departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (1, '2020-05-06', 'S100123', 'North', 0, '12:00:00', '12:05:00', '12:10:00', '12:15:00', 'Card');
+insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (1, 5, 'Miso Ramen', 3, 48.6);
+insert into Delivers (orderId, riderId, rating) values (1, 20, NULL);
+insert into Orders (customerID, orderDate, deliveryLocation, deliveryLocationArea, totalCost,  departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (2, '2020-05-06', 'S100124', 'North', 0, '12:00:00', '12:06:00', '12:16:00', '12:20:00', 'Card');
+insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (2, 4, 'Kung Pow Chicken', 3, 49.2);
+insert into Delivers (orderId, riderId, rating) values (2, 20, NULL);
+insert into Orders (customerID, orderDate, deliveryLocation, deliveryLocationArea, totalCost,  departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (3, '2020-05-07', 'S100159', 'South', 0, '13:00:00', '13:05:00', '13:10:00', '13:15:00', 'Card');
+insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (2, 2, 'Beef Burger', 3, 41.1);
+insert into Delivers (orderId, riderId, rating) values (3, 21, NULL);
+insert into Orders (customerID, orderDate, deliveryLocation, deliveryLocationArea, totalCost,  departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (4, '2020-05-07', 'S100170', 'West', 0, '16:00:00', '16:05:00', '16:10:00', '16:15:00', 'Card');
+insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (2, 3, 'Pork Chops', 3, 57.6);
+insert into Delivers (orderId, riderId, rating) values (4, 22, NULL);
+insert into Orders (customerID, orderDate, deliveryLocation, deliveryLocationArea, totalCost,  departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (5, '2020-05-07', 'S100190', 'North', 0, '18:00:00', '18:05:00', '18:10:00', '18:15:00', 'Card');
+insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (2, 6, 'Mushroom Risotto', 3, 53.1);
+insert into Delivers (orderId, riderId, rating) values (5, 22, NULL);
