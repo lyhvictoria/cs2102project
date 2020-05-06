@@ -1,31 +1,31 @@
 /*General Functions*/
-INSERT INTO Customers(customerId, first_name, last_name) VALUES ($1, $2, $3); --add customers
-INSERT INTO Employees (employeeId, employmentType) VALUES ($1, $2); --add Employees
-INSERT INTO FDSManagers (managerId) VALUES ($1); --add FDSManagers
-INSERT INTO DeliveryRiders (riderId) VALUES ($1); --add Delivery Riders
-INSERT INTO PartTimers (riderId) VALUES ($1); --add part timers
-INSERT INTO FullTimers (riderId) VALUES ($1); --add full timers
-DELETE FROM Customers where customerId = $1; --delete users
+INSERT INTO Customers(customerId, first_name, last_name) VALUES ($1, $2, $3); --add_customers
+INSERT INTO Employees (employeeId, employmentType) VALUES ($1, $2); --add_employees
+INSERT INTO FDSManagers (managerId) VALUES ($1); --add_fdsManagers
+INSERT INTO DeliveryRiders (riderId) VALUES ($1); --add_deliveryRiders
+INSERT INTO PartTimers (riderId) VALUES ($1); --add_partTimers
+INSERT INTO FullTimers (riderId) VALUES ($1); --add_fullTimers
+DELETE FROM Customers where customerId = $1; --del_users
 
 INSERT INTO Orders (orderId, CustomerId, riderId, restaurantId, dateOfOrder, timeOfOrder, deliveryLocationArea, totalCost, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
 
 /*Restaurant staff Functions*/
--- See restaurant info
+-- see_res_info
 SELECT DISTINCT R.restaurantId, name, area, minSpendingAmt
 FROM Restaurants INNER JOIN RestaurantStaff RS on R.restaurantId =  RS.restaurantId
 WHERE RS.restaurantId = $1 LIMIT 1
 ;
--- See all menu items
+-- see_menuItems
 SELECT DISTINCT itemId, itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1
 ;
--- Filter by cuisine
+-- filter_by_cuisine
 SELECT DISTINCT itemId, itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1 AND category = $2
 ;
--- Set menus items daily limit
+-- set_items_dailyLimit
 UPDATE Menus
 SET amtLeft = $1
 WHERE itemId = $2
