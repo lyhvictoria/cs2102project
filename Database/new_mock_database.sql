@@ -103,16 +103,16 @@ insert into Users (name, username, password, type) values ('Florie Doll', 'fdoll
 insert into Users (name, username, password, type) values ('Arin Frankum', 'afrankum8', 'XxWMHYn9', 'DeliveryRider');
 insert into Users (name, username, password, type) values ('Ansel Deval', 'adeval9', 'eide5982m', 'DeliveryRider');
 
-insert into DeliveryRiders (riderId, deliveryFee) values (18, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (19, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (20, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (21, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (22, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (23, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (24, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (25, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (26, 5);
-insert into DeliveryRiders (riderId, deliveryFee) values (27, 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (18, 'PartTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (19, 'PartTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (20, 'PartTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (21, 'PartTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (22, 'PartTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (23, 'FullTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (24, 'FullTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (25, 'FullTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (26, 'FullTime', 5);
+insert into DeliveryRiders (riderId, type, deliveryFee) values (27, 'FullTime', 5);
 
 -- Create 5 Part Timers
 insert into PartTime (riderId) values (18);
