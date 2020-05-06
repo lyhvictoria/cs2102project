@@ -243,11 +243,16 @@ CREATE TABLE Last_5_Dests (
 create or replace function check_isAvailable() returns trigger as $$
 DECLARE currAvailAmt INTEGER;
 DECLARE qtyOrdered INTEGER;
+DECLARE item_price NUMERIC;
 
 begin
 	qtyOrdered := NEW.quantity;
 
 	SELECT amtLeft into currAvailAmt
+	FROM Menus M
+	WHERE M.itemName = NEW.itemName
+	AND M.restaurantId = NEW.restaurantId;
+	SELECT price into item_price
 	FROM Menus M
 	WHERE M.itemName = NEW.itemName
 	AND M.restaurantId = NEW.restaurantId;
@@ -260,6 +265,7 @@ begin
 		SET amtLeft = amtLeft - qtyOrdered
 		WHERE M.itemName = NEW.itemName
 		AND M.restaurantId = NEW.restaurantId;
+		NEW.orderCost = qtyOrdered * item_price;
 		RETURN NEW;
 
 	end if;
