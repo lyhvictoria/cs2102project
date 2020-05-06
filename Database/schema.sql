@@ -174,12 +174,12 @@ CREATE TABLE WorkingWeeks ( -- Full Timer
 );
 
 CREATE TABLE Orders (
-	orderId INTEGER,
+	orderId INTEGER GENERATED ALWAYS AS IDENTITY,
 	customerId INTEGER,
 	orderDate DATE DEFAULT CURRENT_DATE NOT NULL,
 	deliveryLocation VARCHAR(50),
 	deliveryLocationArea VARCHAR(50),
-	totalCost NUMERIC DEFAULT 0 NOT NULL,
+	totalCost NUMERIC DEFAULT 0 Check (totalCost >= 0),
 	promotionId INTEGER DEFAULT NULL,
 	departureTimeToRestaurant TIME,
 	arrivalTimeAtRestaurant TIME,
@@ -260,8 +260,8 @@ begin
 		SET amtLeft = amtLeft - qtyOrdered
 		WHERE M.itemName = NEW.itemName
 		AND M.restaurantId = NEW.restaurantId;
-
 		RETURN NEW;
+
 	end if;
 end;
 $$ language plpgsql;
@@ -336,13 +336,13 @@ Create or replace function add_order_costs() returns trigger as $$
 Declare item_price Numeric;
 
 Begin
-	Select M.price as item_price
+	Perform M.price as item_price
 	From Menus M
 	Where M.restaurantId = NEW.restaurantId
 	And M.itemName = NEW.itemName;
 
 	Update OrderDetails
-	Set orderCost = item_price * NEW.quantity
+	Set orderCost = (item_price * NEW.quantity)
 	Where OrderDetails.orderId = NEW.orderId;
 
 	Return NEW;
