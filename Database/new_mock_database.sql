@@ -116,5 +116,21 @@ insert into DeliveryRiders (riderId, deliveryFee) values (26, 5);
 insert into DeliveryRiders (riderId, deliveryFee) values (27, 5);
 
 -- Create 5 Part Timers
--- Create 5 Full Timers
+insert into PartTime (riderId) values (18);
+insert into PartTime (riderId) values (19);
+insert into PartTime (riderId) values (20);
+insert into PartTime (riderId) values (21);
+insert into PartTime (riderId) values (22);
 
+-- Create 5 Full Timers
+insert into FullTime (riderId) values (23);
+insert into FullTime (riderId) values (24);
+insert into FullTime (riderId) values (25);
+insert into FullTime (riderId) values (26);
+insert into FullTime (riderId) values (27);
+
+-- Create Shift Options
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (1, '10AM to 2PM', '3PM to 7PM');
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (2, '11AM to 3PM', '4PM to 8PM');
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (3, '12PM to 4PM', '5PM to 9PM');
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (4, '1PM to 5PM', '6PM to 10PM');
