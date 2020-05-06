@@ -215,6 +215,7 @@ CREATE TABLE Delivers (
 	FOREIGN KEY (riderId) REFERENCES DeliveryRiders(riderId) ON DELETE CASCADE
 );
 
+
 CREATE TABLE Reviews (
 	orderId INTEGER,
 	review VARCHAR(200),
