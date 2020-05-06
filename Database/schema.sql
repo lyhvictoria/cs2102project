@@ -176,7 +176,7 @@ CREATE TABLE WorkingWeeks ( -- Full Timer
 CREATE TABLE Orders (
 	orderId INTEGER,
 	customerId INTEGER,
-	DATE DATE DEFAULT CURRENT_DATE NOT NULL,
+	orderDate DATE DEFAULT CURRENT_DATE NOT NULL,
 	deliveryLocation VARCHAR(50),
 	deliveryLocationArea VARCHAR(50),
 	totalCost NUMERIC DEFAULT 0 NOT NULL,
@@ -292,9 +292,13 @@ execute function update_isAvailable();
 -- Auto add rewards points
 create or replace function insert_default_points() returns trigger as $$
 begin
-	Update Customers C
-	Set C.rewardPoints = C.rewardPoints + Trunc(NEW.orderCost)
-	Where C.customerId = NEW.customerId;
+	Update Customers
+	Set rewardPoints = rewardPoints + Trunc(NEW.orderCost)
+	Where exists (
+		select 1
+		from Orders O
+		where O.orderId = New.orderId
+		and O.customerId = Customers.customerId);
 	RETURN NULL;
 end;
 $$ language plpgsql;
@@ -306,7 +310,7 @@ for each row
 execute function insert_default_points();
 
 --Calculate total costs of order for every item added
-Create or replace function add_price_to_costs() returns trigger as $$
+Create or replace function add_total_costs() returns trigger as $$
 Declare price_to_add Numeric;
 
 begin
@@ -321,8 +325,31 @@ end;
 $$ language plpgsql;
 
 
-Create trigger calculate_order_costs_trigger
+Create trigger calculate_total_costs_trigger
 After update or insert
 on OrderDetails
 For each row
-Execute function add_price_to_costs();
+Execute function add_total_costs();
+
+-- Calculate orderCosts of order details from quantity & price
+Create or replace function add_order_costs() returns trigger as $$
+Declare item_price Numeric;
+
+Begin
+	Select M.price as item_price
+	From Menus M
+	Where M.restaurantId = NEW.restaurantId
+	And M.itemName = NEW.itemName;
+
+	Update OrderDetails
+	Set orderCost = item_price * NEW.quantity
+	Where OrderDetails.orderId = NEW.orderId;
+
+	Return NEW;
+End;
+$$ language plpgsql;
+
+Create trigger calculate_order_costs
+After update or insert on OrderDetails
+For each row
+Execute function add_order_costs();
