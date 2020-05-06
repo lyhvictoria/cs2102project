@@ -25,12 +25,6 @@ insert into Users (name, username, password, type) values ('Brigitta Hawney', 'b
 insert into Users (name, username, password, type) values ('Paxon Dunkerton', 'pdunkerton3', 'VGrLrJdCNXQ', 'FDSManager');
 insert into Users (name, username, password, type) values ('Kurt Girsch', 'kgirsch4', 'xsCOI0gzn9', 'FDSManager');
 
-insert into FdsManagers (managerId) values (6);
-insert into FdsManagers (managerId) values (7);
-insert into FdsManagers (managerId) values (8);
-insert into FdsManagers (managerId) values (9);
-insert into FdsManagers (managerId) values (10);
-
 -- Create the Areas
 insert into Areas (area) values ('North');
 insert into Areas (area) values ('South');
@@ -236,7 +230,7 @@ INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numComple
 INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(20, '2020-04-27', '11:00', '15:00', 0);
 INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(20, '2020-04-27', '16:00', '20:00', 0);
 INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(20, '2020-04-28', '11:00', '15:00', 0);
-INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(20, '2020-04-28', '16:00', '15:00', 0);
+INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(20, '2020-04-28', '16:00', '20:00', 0);
 INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(20, '2020-04-29', '11:00', '15:00', 0);
 INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(20, '2020-04-29', '16:00', '20:00', 0);
 

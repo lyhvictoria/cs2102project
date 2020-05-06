@@ -174,12 +174,12 @@ CREATE TABLE WorkingWeeks ( -- Full Timer
 );
 
 CREATE TABLE Orders (
-	orderId INTEGER,
+	orderId INTEGER GENERATED ALWAYS AS IDENTITY,
 	customerId INTEGER,
 	orderDate DATE DEFAULT CURRENT_DATE NOT NULL,
 	deliveryLocation VARCHAR(50),
 	deliveryLocationArea VARCHAR(50),
-	totalCost NUMERIC DEFAULT 0 NOT NULL,
+	totalCost NUMERIC DEFAULT 0 Check (totalCost >= 0),
 	promotionId INTEGER DEFAULT NULL,
 	departureTimeToRestaurant TIME,
 	arrivalTimeAtRestaurant TIME,
@@ -243,11 +243,16 @@ CREATE TABLE Last_5_Dests (
 create or replace function check_isAvailable() returns trigger as $$
 DECLARE currAvailAmt INTEGER;
 DECLARE qtyOrdered INTEGER;
+DECLARE item_price NUMERIC;
 
 begin
 	qtyOrdered := NEW.quantity;
 
 	SELECT amtLeft into currAvailAmt
+	FROM Menus M
+	WHERE M.itemName = NEW.itemName
+	AND M.restaurantId = NEW.restaurantId;
+	SELECT price into item_price
 	FROM Menus M
 	WHERE M.itemName = NEW.itemName
 	AND M.restaurantId = NEW.restaurantId;
@@ -260,8 +265,9 @@ begin
 		SET amtLeft = amtLeft - qtyOrdered
 		WHERE M.itemName = NEW.itemName
 		AND M.restaurantId = NEW.restaurantId;
-
+		NEW.orderCost = qtyOrdered * item_price;
 		RETURN NEW;
+
 	end if;
 end;
 $$ language plpgsql;
@@ -330,26 +336,3 @@ After update or insert
 on OrderDetails
 For each row
 Execute function add_total_costs();
-
--- Calculate orderCosts of order details from quantity & price
-Create or replace function add_order_costs() returns trigger as $$
-Declare item_price Numeric;
-
-Begin
-	Select M.price as item_price
-	From Menus M
-	Where M.restaurantId = NEW.restaurantId
-	And M.itemName = NEW.itemName;
-
-	Update OrderDetails
-	Set orderCost = item_price * NEW.quantity
-	Where OrderDetails.orderId = NEW.orderId;
-
-	Return NEW;
-End;
-$$ language plpgsql;
-
-Create trigger calculate_order_costs
-After update or insert on OrderDetails
-For each row
-Execute function add_order_costs();
