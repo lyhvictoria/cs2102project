@@ -336,26 +336,3 @@ After update or insert
 on OrderDetails
 For each row
 Execute function add_total_costs();
-
--- Calculate orderCosts of order details from quantity & price
-Create or replace function add_order_costs() returns trigger as $$
-Declare item_price Numeric;
-
-Begin
-	Perform M.price as item_price
-	From Menus M
-	Where M.restaurantId = NEW.restaurantId
-	And M.itemName = NEW.itemName;
-
-	Update OrderDetails
-	Set orderCost = (item_price * NEW.quantity)
-	Where OrderDetails.orderId = NEW.orderId;
-
-	Return NEW;
-End;
-$$ language plpgsql;
-
-Create trigger calculate_order_costs
-After update or insert on OrderDetails
-For each row
-Execute function add_order_costs();
