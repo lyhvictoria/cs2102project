@@ -237,3 +237,92 @@ CREATE TABLE Last_5_Dests (
 	PRIMARY key (customerId),
 	FOREIGN key (customerId) REFERENCES Customers (customerId) ON DELETE CASCADE
 );
+
+/* TRIGGERS */
+-- Checks if order can go through
+create or replace function check_isAvailable() returns trigger as $$
+DECLARE currAvailAmt INTEGER;
+DECLARE qtyOrdered INTEGER;
+
+begin
+	qtyOrdered := NEW.quantity;
+
+	SELECT amtLeft into currAvailAmt
+	FROM Menus M
+	WHERE M.itemName = NEW.itemName
+	AND M.restaurantId = NEW.restaurantId;
+
+	if NEW.quantity > currAvailAmt then
+		RAISE NOTICE 'Exceed Daily Limit';
+		RETURN NULL; -- reject order
+	else -- update amtLeft
+		UPDATE Menus M
+		SET amtLeft = amtLeft - qtyOrdered
+		WHERE M.itemName = NEW.itemName
+		AND M.restaurantId = NEW.restaurantId;
+
+		RETURN NEW;
+	end if;
+end;
+$$ language plpgsql;
+
+create trigger trig_check_isAvailable
+before insert or update
+on OrderDetails
+for each row
+execute function check_isAvailable();
+
+-- Auto sets item availability if amtLeft changes
+create or replace function update_isAvailable() returns trigger as $$
+begin
+	if NEW.amtLeft = 0 then
+		UPDATE Menus
+		SET isAvailable = false;
+	end if;
+	RETURN NEW;
+end;
+$$ language plpgsql;
+
+create trigger trig_update_isAvailable
+after insert or update
+on Menus
+for each row
+execute function update_isAvailable();
+
+-- Auto add rewards points
+create or replace function insert_default_points() returns trigger as $$
+begin
+	Update Customers C
+	Set C.rewardPoints = C.rewardPoints + Trunc(NEW.orderCost)
+	Where C.customerId = NEW.customerId;
+	RETURN NULL;
+end;
+$$ language plpgsql;
+
+create trigger trig_insert_default_points
+after insert
+on OrderDetails
+for each row
+execute function insert_default_points();
+
+--Calculate total costs of order for every item added
+Create or replace function add_price_to_costs() returns trigger as $$
+Declare price_to_add Numeric;
+
+begin
+	price_to_add := NEW.orderCost;
+
+	Update Orders
+	Set totalCost = totalCost + price_to_add
+	Where Orders.orderId = NEW.orderId;
+
+	RETURN NEW;
+end;
+$$ language plpgsql;
+
+
+Create trigger calculate_order_costs_trigger
+After update or insert
+on OrderDetails
+For each row
+Execute function add_price_to_costs();
