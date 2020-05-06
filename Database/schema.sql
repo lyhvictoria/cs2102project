@@ -176,7 +176,7 @@ CREATE TABLE WorkingWeeks ( -- Full Timer
 CREATE TABLE Orders (
 	orderId INTEGER,
 	customerId INTEGER,
-	DATE DATE DEFAULT CURRENT_DATE NOT NULL,
+	orderDate DATE DEFAULT CURRENT_DATE NOT NULL,
 	deliveryLocation VARCHAR(50),
 	deliveryLocationArea VARCHAR(50),
 	totalCost NUMERIC DEFAULT 0 NOT NULL,
