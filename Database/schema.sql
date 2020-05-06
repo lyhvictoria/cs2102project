@@ -328,7 +328,7 @@ For each row
 Execute function add_total_costs();
 
 -- Calculate orderCosts of order details from quantity & price
-Create or replace function add_order_costs returns trigger as $$
+Create or replace function add_order_costs() returns trigger as $$
 Declare item_price Numeric;
 
 Begin
@@ -345,8 +345,7 @@ Begin
 End;
 $$ language plpgsql;
 
-Drop trigger if exists calculate_order_costs on OrderDetails cascade;
-Create trigger calculate_order_costs trigger
+Create trigger calculate_order_costs
 After update or insert on OrderDetails
 For each row
 Execute function add_order_costs();
