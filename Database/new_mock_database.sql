@@ -1,9 +1,9 @@
 -- Create 5 Customers
-insert into Users (uid, name, username, password, type) values (1, 'Truda Scroggie', 'tscroggie0', '3FLwB4TSVcy', 'Customer');
-insert into Users (uid, name, username, password, type) values (2, 'Bealle Peete', 'bpeete1', 'LJykiUgw', 'Customer');
-insert into Users (uid, name, username, password, type) values (3, 'Starlin Nutbeam', 'snutbeam2', 'rqh0w8Q', 'Customer');
-insert into Users (uid, name, username, password, type) values (4, 'Barret von Grollmann', 'bvon3', 'Plf0ZX', 'Customer');
-insert into Users (uid, name, username, password, type) values (5, 'Tricia Tregust', 'ttregust4', 'vGlowu', 'Customer');
+insert into Users (name, username, password, type) values ('Truda Scroggie', 'tscroggie0', '3FLwB4TSVcy', 'Customer');
+insert into Users (name, username, password, type) values ('Bealle Peete', 'bpeete1', 'LJykiUgw', 'Customer');
+insert into Users (name, username, password, type) values ('Starlin Nutbeam', 'snutbeam2', 'rqh0w8Q', 'Customer');
+insert into Users (name, username, password, type) values ('Barret von Grollmann', 'bvon3', 'Plf0ZX', 'Customer');
+insert into Users (name, username, password, type) values ('Tricia Tregust', 'ttregust4', 'vGlowu', 'Customer');
 
 insert into Customers (customerId, rewardPoints, startDate) values (1, 23, '2020-04-07 01:43:42');
 insert into Customers (customerId, rewardPoints, startDate) values (2, 76, '2020-01-12 15:39:31');
@@ -19,11 +19,11 @@ insert into CreditCards (customerId, cardNumber) values (4, '4777-1992-3468-6461
 insert into CreditCards (customerId, cardNumber) values (5, '1131-2567-7065-4352');
 
 -- Create 5 FDSManagers
-insert into Users (uid, name, username, password, type) values (6, 'Edgardo Coverley', 'ecoverley0', 'AUVGkLIjrJ2', 'FDSManager');
-insert into Users (uid, name, username, password, type) values (7, 'Toddie Silverthorn', 'tsilverthorn1', 'ommBjE', 'FDSManager');
-insert into Users (uid, name, username, password, type) values (8, 'Brigitta Hawney', 'bhawney2', '4EIdchpzix2', 'FDSManager');
-insert into Users (uid, name, username, password, type) values (9, 'Paxon Dunkerton', 'pdunkerton3', 'VGrLrJdCNXQ', 'FDSManager');
-insert into Users (uid, name, username, password, type) values (10, 'Kurt Girsch', 'kgirsch4', 'xsCOI0gzn9', 'FDSManager');
+insert into Users (name, username, password, type) values ('Edgardo Coverley', 'ecoverley0', 'AUVGkLIjrJ2', 'FDSManager');
+insert into Users (name, username, password, type) values ('Toddie Silverthorn', 'tsilverthorn1', 'ommBjE', 'FDSManager');
+insert into Users (name, username, password, type) values ('Brigitta Hawney', 'bhawney2', '4EIdchpzix2', 'FDSManager');
+insert into Users (name, username, password, type) values ('Paxon Dunkerton', 'pdunkerton3', 'VGrLrJdCNXQ', 'FDSManager');
+insert into Users (name, username, password, type) values ('Kurt Girsch', 'kgirsch4', 'xsCOI0gzn9', 'FDSManager');
 
 insert into FdsManagers (managerId) values (6);
 insert into FdsManagers (managerId) values (7);
@@ -47,21 +47,21 @@ insert into Restaurants (restaurantId, area, name, minSpendingAmt) values (5, 'W
 insert into Restaurants (restaurantId, area, name, minSpendingAmt) values (6, 'Central', 'Lord Of Fries', 10);
 
 -- Create 7 Resturant Staff
-insert into Users (uid, name, username, password, type) values (11, 'Maryanne Kolczynski', 'mkolczynski0', 'iX5A9o', 'RestaurantStaff');
-insert into Users (uid, name, username, password, type) values (12, 'Royce Brandoni', 'rbrandoni1', 'APRuqs3SQk', 'RestaurantStaff');
-insert into Users (uid, name, username, password, type) values (13, 'Cody Baudoux', 'cbaudoux2', 'HU1I6m', 'RestaurantStaff');
-insert into Users (uid, name, username, password, type) values (14, 'Dulcia Halpin', 'dhalpin3', 'RIK1Qj', 'RestaurantStaff');
-insert into Users (uid, name, username, password, type) values (15, 'Dwight Tubble', 'dtubble4', '9030kS', 'RestaurantStaff');
-insert into Users (uid, name, username, password, type) values (16, 'Sibley Trevance', 'strevance0', 'WwRVitrj', 'RestaurantStaff');
-insert into Users (uid, name, username, password, type) values (17, 'Clerc Johanchon', 'cjohanchon1', 'sJariyxD68Th', 'RestaurantStaff');
+insert into Users (name, username, password, type) values ('Maryanne Kolczynski', 'mkolczynski0', 'iX5A9o', 'RestaurantStaff');
+insert into Users (name, username, password, type) values ('Royce Brandoni', 'rbrandoni1', 'APRuqs3SQk', 'RestaurantStaff');
+insert into Users (name, username, password, type) values ('Cody Baudoux', 'cbaudoux2', 'HU1I6m', 'RestaurantStaff');
+insert into Users (name, username, password, type) values ('Dulcia Halpin', 'dhalpin3', 'RIK1Qj', 'RestaurantStaff');
+insert into Users (name, username, password, type) values ('Dwight Tubble', 'dtubble4', '9030kS', 'RestaurantStaff');
+insert into Users (name, username, password, type) values ('Sibley Trevance', 'strevance0', 'WwRVitrj', 'RestaurantStaff');
+insert into Users (name, username, password, type) values ('Clerc Johanchon', 'cjohanchon1', 'sJariyxD68Th', 'RestaurantStaff');
 
-insert into RestaurantStaff (restStaffId, restuarantId) values (11, 1);
-insert into RestaurantStaff (restStaffId, restuarantId) values (12, 2);
-insert into RestaurantStaff (restStaffId, restuarantId) values (13, 3);
-insert into RestaurantStaff (restStaffId, restuarantId) values (14, 4);
-insert into RestaurantStaff (restStaffId, restuarantId) values (15, 5);
-insert into RestaurantStaff (restStaffId, restuarantId) values (16, 6);
-insert into RestaurantStaff (restStaffId, restuarantId) values (17, 7);
+insert into RestaurantStaff (restStaffId, restaurantId) values (11, 1);
+insert into RestaurantStaff (restStaffId, restaurantId) values (12, 2);
+insert into RestaurantStaff (restStaffId, restaurantId) values (13, 3);
+insert into RestaurantStaff (restStaffId, restaurantId) values (14, 4);
+insert into RestaurantStaff (restStaffId, restaurantId) values (15, 5);
+insert into RestaurantStaff (restStaffId, restaurantId) values (16, 6);
+insert into RestaurantStaff (restStaffId, restaurantId) values (17, 7);
 
 -- Create Restaurant Menus
 insert into Menus (restaurantId, itemName, price, category, isAvailable, amtLeft) values (1, 'Stringtough', 3.3, 'Thai', true, 157);
