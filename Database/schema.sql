@@ -306,7 +306,7 @@ for each row
 execute function insert_default_points();
 
 --Calculate total costs of order for every item added
-Create or replace function add_price_to_costs() returns trigger as $$
+Create or replace function add_total_costs() returns trigger as $$
 Declare price_to_add Numeric;
 
 begin
@@ -321,8 +321,32 @@ end;
 $$ language plpgsql;
 
 
-Create trigger calculate_order_costs_trigger
+Create trigger calculate_total_costs_trigger
 After update or insert
 on OrderDetails
 For each row
-Execute function add_price_to_costs();
+Execute function add_total_costs();
+
+-- Calculate orderCosts of order details from quantity & price
+Create or replace function add_order_costs returns trigger as $$
+Declare item_price Numeric;
+
+Begin
+	Select M.price as item_price
+	From Menus M
+	Where M.restaurantId = NEW.restaurantId
+	And M.itemName = NEW.itemName;
+
+	Update OrderDetails
+	Set orderCost = item_price * NEW.quantity
+	Where OrderDetails.orderId = NEW.orderId;
+
+	Return NEW;
+End;
+$$ language plpgsql;
+
+Drop trigger if exists calculate_order_costs on OrderDetails cascade;
+Create trigger calculate_order_costs trigger
+After update or insert on OrderDetails
+For each row
+Execute function add_order_costs();

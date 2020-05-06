@@ -121,6 +121,12 @@ insert into PartTime (riderId) values (20);
 insert into PartTime (riderId) values (21);
 insert into PartTime (riderId) values (22);
 
+-- Create Shift Options
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (1, '10AM to 2PM', '3PM to 7PM');
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (2, '11AM to 3PM', '4PM to 8PM');
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (3, '12PM to 4PM', '5PM to 9PM');
+insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (4, '1PM to 5PM', '6PM to 10PM');
+
 -- Create WorkingDays
 INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(18, '2020-04-06', '10:00', '14:00', 0);
 INSERT INTO WorkingDays(riderId, workDate, intervalStart, intervalEnd, numCompleted) VALUES(18, '2020-04-06', '15:00', '19:00', 0);
@@ -340,7 +346,7 @@ insert into FullTime (riderId) values (25);
 insert into FullTime (riderId) values (26);
 insert into FullTime (riderId) values (27);
 
--- Create WorkingWeeks 
+-- Create WorkingWeeks
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-23', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-24', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-25', 1, 0);
@@ -429,13 +435,13 @@ INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-21', 2, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-22', 2, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-23', 2, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-24', 2, 0); 
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-24', 2, 0);
 
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-20', 4, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-21', 4, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-22', 4, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-23', 4, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-24', 4, 0); 
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-24', 4, 0);
 
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-20', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-21', 1, 0);
@@ -472,9 +478,3 @@ INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-17', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-18', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-19', 1, 0);
-
--- Create Shift Options
-insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (1, '10AM to 2PM', '3PM to 7PM');
-insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (2, '11AM to 3PM', '4PM to 8PM');
-insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (3, '12PM to 4PM', '5PM to 9PM');
-insert into ShiftOptions (shiftId, shiftDetail1, shiftDetail2) values (4, '1PM to 5PM', '6PM to 10PM');
