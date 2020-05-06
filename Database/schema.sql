@@ -292,9 +292,13 @@ execute function update_isAvailable();
 -- Auto add rewards points
 create or replace function insert_default_points() returns trigger as $$
 begin
-	Update Customers C
-	Set C.rewardPoints = C.rewardPoints + Trunc(NEW.orderCost)
-	Where C.customerId = NEW.customerId;
+	Update Customers
+	Set rewardPoints = rewardPoints + Trunc(NEW.orderCost)
+	Where exists (
+		select 1
+		from Orders O
+		where O.orderId = New.orderId
+		and O.customerId = Customers.customerId);
 	RETURN NULL;
 end;
 $$ language plpgsql;
