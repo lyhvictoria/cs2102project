@@ -53,6 +53,43 @@ INSERT INTO CreditCards (customerId, cardNumber) VALUES ($1, $2);
 DELETE FROM CreditCards
 WHERE customerId = $1 AND cardNumber = $2
 ;
+-- Create a order
+INSERT INTO Orders (customerId, orderDate, orderTime, paymentMode) VALUES ($1, $2, $3, $4);
+RETURNING orderId --get the new orderId
+
+-- Add items to order (trigger will update orderCost)
+INSERT INTO OrderDetails (orderId, restaurantId, itemName, quantity) VALUES ($1, $2, $3, $4);
+
+-- Add location to order
+UPDATE Orders
+SET deliveryLocation = $1, deliveryLocationArea = $3
+WHERE orderId = $1
+;
+-- Add a promotion to order
+UPDATE Orders
+SET promotionId = $2
+WHERE orderId = $1;
+;
+-- Add departureTimeToRestaurant
+UPDATE Orders
+SET departureTimeToRestaurant = $2
+WHERE orderId = $1
+;
+-- Add arrivalTimeAtRestaurant
+UPDATE Orders
+SET arrivalTimeAtRestaurant = $2
+WHERE orderId = $1
+;
+-- Add departureTimeToDestination
+UPDATE Orders
+SET departureTimeToDestination = $2
+WHERE orderId = $1
+;
+-- Add arrivalTimeAtDestination
+UPDATE Orders
+SET arrivalTimeAtDestination = $2
+WHERE orderId = $1
+;
 -- Use rewards points, $2 is points used
 UPDATE Customers
 SET rewardPoints = rewardPoints - $2
@@ -110,30 +147,28 @@ WHERE S.restStaffId = $1
 -- Create a restaurant promotion with discount %
 -- $1 = startDate, $2 = endDate, $3 = % discount, $4 = minimumAmtSpent
 -- $5 = restaurantId
-WITH newPromo as (
+DECLARE newPromoId INTEGER
+BEGIN
     INSERT INTO Promotions (type, startDate, endDate, discountPerc, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
-    RETURNING promotionId --get the new promotionId
-)
-;
-INSERT INTO RestaurantPromotions (promotionId, restaurantId)
-SELECT promotionId, $5
-FROM newPromo
-;
+    RETURNING promotionId INTO newPromoId; --get the new promotionId
+
+    INSERT INTO RestaurantPromotions (promotionId, restaurantId)
+    SELECT newPromoId, $5;
+END;
 -- Create a restaurant promotion with fixed discount amount
 -- $1 = startDate, $2 = endDate, $3 = discount amount, $4 = minimumAmtSpent
 -- $5 = restaurantId
-WITH newPromo as (
+DECLARE newPromoId INTEGER
+BEGIN
     INSERT INTO Promotions (type, startDate, endDate, discountAmt, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
-    RETURNING promotionId --get the new promotionId
-)
-;
-INSERT INTO RestaurantPromotions (promotionId, restaurantId)
-SELECT promotionId, $5
-FROM newPromo
-;
+    RETURNING promotionId INTO newPromoId; --get the new promotionId
+
+    INSERT INTO RestaurantPromotions (promotionId, restaurantId)
+    SELECT newPromoId, $5;
+END;
 -- Edit start and end date of restaurant promotion
 UPDATE Promotions
-SET startDate = $2 AND endDate = $3
+SET startDate = $2, endDate = $3
 WHERE promotionId = $1
 ;
 -- Edit discount % of restaurant promotion
@@ -190,7 +225,7 @@ WITH Duration AS (
         FROM RestaurantPromotions R JOIN Promotions P USING (promotionId)
             JOIN Orders O USING (promotionId)
             WHERE R.restaurantId = $1
-        GROUP BY P.promoID
+        GROUP BY P.promotionId
     )
 
 SELECT DISTINCT D.promotionId, totalOrders, durationInDays, durationInHours,
