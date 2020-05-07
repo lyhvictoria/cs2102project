@@ -181,6 +181,7 @@ CREATE TABLE Orders (
 	deliveryLocationArea VARCHAR(50),
 	totalCost NUMERIC DEFAULT 0 Check (totalCost >= 0),
 	promotionId INTEGER DEFAULT NULL,
+	orderTime TIME,
 	departureTimeToRestaurant TIME,
 	arrivalTimeAtRestaurant TIME,
 	departureTimeToDestination TIME,
