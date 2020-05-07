@@ -241,10 +241,11 @@ CREATE TABLE Last_5_Dests (
 
 /* TRIGGERS */
 -- Checks if order can go through
+-- if does then updates amtleft in menus and the ordercosts of that item in orderdetails
 create or replace function check_isAvailable() returns trigger as $$
 DECLARE currAvailAmt INTEGER;
 DECLARE qtyOrdered INTEGER;
-DECLARE item_price NUMERIC;
+DECLARE itemPrice NUMERIC;
 
 begin
 	qtyOrdered := NEW.quantity;
@@ -253,7 +254,7 @@ begin
 	FROM Menus M
 	WHERE M.itemName = NEW.itemName
 	AND M.restaurantId = NEW.restaurantId;
-	SELECT price into item_price
+	SELECT price into itemPrice
 	FROM Menus M
 	WHERE M.itemName = NEW.itemName
 	AND M.restaurantId = NEW.restaurantId;
@@ -266,7 +267,7 @@ begin
 		SET amtLeft = amtLeft - qtyOrdered
 		WHERE M.itemName = NEW.itemName
 		AND M.restaurantId = NEW.restaurantId;
-		NEW.orderCost = qtyOrdered * item_price;
+		NEW.orderCost = qtyOrdered * itemPrice;
 		RETURN NEW;
 
 	end if;
@@ -283,8 +284,10 @@ execute function check_isAvailable();
 create or replace function update_isAvailable() returns trigger as $$
 begin
 	if NEW.amtLeft = 0 then
-		UPDATE Menus
+		UPDATE Menus M
 		SET isAvailable = false;
+		WHERE M.itemName = NEW.itemName
+		AND M.restaurantId = NEW.restaurantId
 	end if;
 	RETURN NEW;
 end;
@@ -299,13 +302,13 @@ execute function update_isAvailable();
 -- Auto add rewards points
 create or replace function insert_default_points() returns trigger as $$
 begin
-	Update Customers
-	Set rewardPoints = rewardPoints + Trunc(NEW.orderCost)
-	Where exists (
-		select 1
-		from Orders O
-		where O.orderId = New.orderId
-		and O.customerId = Customers.customerId);
+	UPDATE Customers
+	SET rewardPoints = rewardPoints + Trunc(NEW.orderCost)
+	WHERE EXISTS (
+		SELECT 1
+		FROM Orders O
+		WHERE O.orderId = NEW.orderId
+		AND O.customerId = Customers.customerId);
 	RETURN NULL;
 end;
 $$ language plpgsql;
@@ -331,9 +334,132 @@ begin
 end;
 $$ language plpgsql;
 
-
 Create trigger calculate_total_costs_trigger
 After update or insert
 on OrderDetails
 For each row
 Execute function add_total_costs();
+
+-- Update newly completed
+Create or replace function add_to_orders_completed() returns trigger as $$
+DECLARE type_of_rider varchar(100);
+DECLARE time_of_order TIME;
+DECLARE date_of_order DATE;
+
+Begin
+	SELECT orderTime into time_of_order
+	FROM Orders
+	WHERE orderId = NEW.orderId;
+
+	SELECT orderDate into date_of_order
+	FROM Orders
+	WHERE orderId = NEW.orderId;
+
+	SELECT type into type_of_rider
+	FROM DeliveryRiders dr
+	WHERE dr.riderId = NEW.riderId;
+
+	if type_of_rider = 'FullTime' then
+		UPDATE WorkingWeeks
+		SET numCompleted = numCompleted + 1
+		WHERE riderId = NEW.riderId
+		AND workDate = date_of_order
+		AND time_of_order >= intervalStart
+		AND time_of_order <= intervalEnd;
+	else
+		UPDATE WorkingDays
+		SET numCompleted = numCompleted + 1
+		WHERE riderId = NEW.riderId
+		AND workDate = date_of_order
+		AND time_of_order >= intervalStart
+		AND time_of_order <= intervalEnd;
+	end if;
+	RETURN NEW;
+
+End;
+$$ language plpgsql;
+
+Create trigger increase_completed_orders
+After insert
+on Delivers
+For each row
+Execute function add_to_orders_completed();
+
+-- Update when orders are cancelled
+Create or replace function minus_to_orders_completed() returns trigger as $$
+DECLARE type_of_rider varchar(100);
+DECLARE time_of_order TIME;
+DECLARE date_of_order DATE;
+
+Begin
+	SELECT orderTime into time_of_order
+	FROM Orders
+	WHERE orderId = NEW.orderId;
+
+	SELECT orderDate into date_of_order
+	FROM Orders
+	WHERE orderId = NEW.orderId;
+
+	SELECT type into type_of_rider
+	FROM DeliveryRiders dr
+	WHERE dr.riderId = NEW.riderId;
+
+	if type_of_rider = 'FullTime' then
+		UPDATE WorkingWeeks
+		SET numCompleted = numCompleted - 1
+		WHERE riderId = NEW.riderId
+		AND workDate = date_of_order
+		AND workDate = date_of_order
+		AND time_of_order >= intervalStart
+		AND time_of_order <= intervalEnd;
+	else
+		UPDATE WorkingDays
+		SET numCompleted = numCompleted - 1
+		WHERE riderId = NEW.riderId
+		AND workDate = date_of_order
+		AND time_of_order >= intervalStart
+		AND time_of_order <= intervalEnd;
+	end if;
+	RETURN NEW;
+
+End;
+$$ language plpgsql;
+
+Create trigger decrease_completed_orders
+After Delete
+on Delivers
+For each row
+Execute function minus_to_orders_completed();
+
+-- Check if all items come from 1 restaurants
+Create or replace function check_all_one_restaurant() returns trigger as $$
+DECLARE restaurantIdid_of_order INTEGER;
+DECLARE num_ods INTEGER;
+
+Begin
+	SELECT count(*) into num_ods
+	FROM OrderDetails
+	WHERE orderId = NEW.orderId;
+
+	if num_ods > 0 then
+		SELECT restaurantId into restaurantIdid_of_order
+		FROM OrderDetails od
+		WHERE orderId = NEW.orderId;
+	end if;
+
+	if num_ods = 0 then
+		RETURN NEW;
+	elsif restaurantIdid_of_order = NEW.restaurantId then
+		RETURN NEW;
+	else
+		RAISE NOTICE 'All items in Order only from 1 Restaurant';
+		RETURN NULL;
+	end if;
+
+End;
+$$ language plpgsql;
+
+Create trigger order_from_one_trigger
+Before update of restaurantId or insert on OrderDetails
+For each row
+Execute function check_all_one_restaurant();
