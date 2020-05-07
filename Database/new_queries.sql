@@ -258,8 +258,7 @@ Inner join computeFT using (riderId)
 ;
 
 /*create weekly work schedule for PartTime*/
-riderId, workDate, shiftId, numCompleted
-$1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
+-- $1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
 Begin;
 Update WorkingDays 
 Set riderId = $1
@@ -274,8 +273,7 @@ where $1 exists (
 Commit;
 
 /*create monthly work schedule for FullTime*/
-riderId, workDate, shiftId, numCompleted
-$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
+--$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
 Begin;
 Update WorkingWeeks 
 Set riderId = $1
