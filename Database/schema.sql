@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS Customers CASCADE;
 DROP TABLE IF EXISTS CreditCards CASCADE;
 DROP TABLE IF EXISTS Areas CASCADE;
+DROP TABLE IF EXISTS Locations CASCADE;
 DROP TABLE IF EXISTS Restaurants CASCADE;
 DROP TABLE IF EXISTS Menus CASCADE;
 DROP TABLE IF EXISTS Promotions CASCADE;
@@ -63,6 +64,13 @@ CREATE TABLE Areas (
 		)
 	),
 	PRIMARY key (area)
+);
+
+CREATE TABLE Locations (
+	location VARCHAR(50),
+	area VARCHAR(50),
+	PRIMARY key(location),
+	FOREIGN key(area) REFERENCES Areas (area)
 );
 
 CREATE TABLE Restaurants (
@@ -178,7 +186,6 @@ CREATE TABLE Orders (
 	customerId INTEGER,
 	orderDate DATE DEFAULT CURRENT_DATE NOT NULL,
 	deliveryLocation VARCHAR(50),
-	deliveryLocationArea VARCHAR(50),
 	totalCost NUMERIC DEFAULT 0 Check (totalCost >= 0),
 	promotionId INTEGER DEFAULT NULL,
 	orderTime TIME,
@@ -189,6 +196,7 @@ CREATE TABLE Orders (
 	paymentMode VARCHAR(50) CHECK (paymentMode IN ('Card', 'Cash')),
 	PRIMARY key (orderId),
 	FOREIGN key (customerId) REFERENCES Customers (customerId) ON DELETE CASCADE,
+	FOREIGN key (deliveryLocation) REFERENCES Locations (location),
 	FOREIGN key (promotionId) REFERENCES Promotions (promotionId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
