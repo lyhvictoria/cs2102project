@@ -214,12 +214,14 @@ Select distinct FT.riderId, EXTRACT(YEAR from WW.workDate) as year, EXTRACT(MONT
 From  FullTime FT
 Inner join WorkingWeeks WW using (riderId)
 Group by FT.riderID, EXTRACT(YEAR from WW.workDate), EXTRACT(MONTH from WW.workDate)
+Order by FT.riderId; 
 
 /*PART TIME*/
 Select distinct PT.riderId, EXTRACT(YEAR from WD.workDate) as year, EXTRACT(MONTH  from WD.workDate) as month, SUM(WD.numCompleted) as totalOrders
 From PartTime PT
 Inner join WorkingDays WD using (riderId)
-Group by PT.riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate);
+Group by PT.riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate)
+Order by PT.riderId;
 
 /*View total salary earned by each rider for each month*/
 /*PartTime*/
@@ -258,8 +260,7 @@ Inner join computeFT using (riderId)
 ;
 
 /*create weekly work schedule for PartTime*/
-riderId, workDate, shiftId, numCompleted
-$1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
+-- $1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
 Begin;
 Update WorkingDays 
 Set riderId = $1
@@ -274,8 +275,7 @@ where $1 exists (
 Commit;
 
 /*create monthly work schedule for FullTime*/
-riderId, workDate, shiftId, numCompleted
-$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
+--$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
 Begin;
 Update WorkingWeeks 
 Set riderId = $1
