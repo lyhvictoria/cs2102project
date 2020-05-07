@@ -93,16 +93,16 @@ insert into Menus (restaurantId, itemName, price, category, isAvailable, amtLeft
 insert into Menus (restaurantId, itemName, price, category, isAvailable, amtLeft) values (6, 'Cheese Pizza', 6.3, 'Italian', true, 89);
 
 -- Create 10 Promotions
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (1, 'FDSpromo', '2020-04-01', '2020-04-10', 20, 0, 10);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (2, 'FDSpromo', '2020-05-01', '2020-05-20', 25, 0, 20);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (3, 'FDSpromo', '2020-05-21', '2020-05-31', 10, 0, 10);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (4, 'FDSpromo', '2020-06-01', '2020-08-01', 5, 0, 0);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (5, 'FDSpromo', '2020-08-02', '2020-08-31', 15, 0, 50);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (6, 'Restpromo', '2020-08-09', '2020-08-09', 30, 0, 25);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (7, 'Restpromo', '2020-09-01', '2020-09-15', 35, 0, 30);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (8, 'Restpromo', '2020-09-16', '2020-10-05', 3, 0, 25);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (9, 'Restpromo', '2020-10-25', '2020-10-25', 12, 0, 0);
-insert into Promotions (promotionId, type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values (10, 'Restpromo', '2020-11-01', '2020-11-08', 2, 0, 0);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('FDSpromo', '2020-04-01', '2020-04-10', 20, 0, 10);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('FDSpromo', '2020-05-01', '2020-05-20', 25, 0, 20);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('FDSpromo', '2020-05-21', '2020-05-31', 10, 0, 10);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('FDSpromo', '2020-06-01', '2020-08-01', 5, 0, 0);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('FDSpromo', '2020-08-02', '2020-08-31', 15, 0, 50);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('Restpromo', '2020-08-09', '2020-08-09', 30, 0, 25);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('Restpromo', '2020-09-01', '2020-09-15', 35, 0, 30);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('Restpromo', '2020-09-16', '2020-10-05', 3, 0, 25);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('Restpromo', '2020-10-25', '2020-10-25', 12, 0, 0);
+insert into Promotions (type, startDate, endDate, discountPerc, discountAmt, minimumAmtSpent) values ('Restpromo', '2020-11-01', '2020-11-08', 2, 0, 0);
 
 -- Create 5 Restaurant Promotions
 insert into RestaurantPromotions (promotionId, restaurantId) values (6, 1);
@@ -500,11 +500,11 @@ INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-19', 1, 0);
 
 -- Create 5 Orders
-insert into Locations (location, area) values ('S100123', 'North');
-insert into Locations (location, area) values ('S100124', 'North');
-insert into Locations (location, area) values ('S100159', 'South');
-insert into Locations (location, area) values ('S100170', 'West');
-insert into Locations (location, area) values ('S100190', 'North');
+insert into CustomerLocations (custLocation, area) values ('S100123', 'North');
+insert into CustomerLocations (custLocation, area) values ('S100124', 'North');
+insert into CustomerLocations (custLocation, area) values ('S100159', 'South');
+insert into CustomerLocations (custLocation, area) values ('S100170', 'West');
+insert into CustomerLocations (custLocation, area) values ('S100190', 'North');
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (1, '2020-05-06', 'S100123', 0, '11:59:20', '12:00:00', '12:05:00', '12:10:00', '12:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (1, 5, 'Miso Ramen', 3, 48.6);
 insert into Delivers (orderId, riderId, rating) values (1, 20, NULL);
