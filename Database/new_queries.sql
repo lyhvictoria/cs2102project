@@ -6,62 +6,63 @@
 SELECT *
 FROM Customers
 WHERE customerId = $1
-
+;
 -- Get list of restaurants
 SELECT DISTINCT restaurantId, area, name, minSpendingAmt
 FROM Restaurants
 ORDER BY restaurantId
-
+;
 -- Get info of restaurant selected
 SELECT restaurantId, area, name, minSpendingAmt
 FROM Restaurants
 WHERE restaurantId = $1
-
+;
 -- View menu items for restaurant selected
 SELECT DISTINCT itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1
-
+;
 -- View all the reviews of restaurant selected
-SELECT DISTINCT  to_char(O.date,\'DD-Mon-YYYY\') as date, R.name, R.review, R.rating
+SELECT DISTINCT  to_char(O.orderDate,\'DD-Mon-YYYY\') as orderDate, R.name, R.review, R.rating
 FROM Reviews R JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
 WHERE R.name = $1
-
+;
 -- View all their past reviews
-SELECT DISTINCT to_char(O.date,\'DD-Mon-YYYY\') as date, R.name, R.review, R.rating
+SELECT DISTINCT to_char(O.orderDate,\'DD-Mon-YYYY\') as orderDate, R.name, R.review, R.rating
 FROM Reviews R JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
 WHERE O.customerId = $1
-
+;
 -- View the average rating of restaurant selected
 SELECT Round(AVG(ALL R.rating),2) as avgRating
 FROM Reviews R JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
 WHERE R.name = $1
-
+;
 -- Make a review for their order
-INSERT INTO Reviews (reviewId, orderId, review, rating) VALUES ($1, $2, $3, $4)
+INSERT INTO Reviews (reviewId, orderId, review, rating) VALUES ($1, $2, $3, $4);
 
 -- Add a credit card for customer
-INSERT INTO CreditCards (customerId, cardNumber) VALUES ($1, $2)
+INSERT INTO CreditCards (customerId, cardNumber) VALUES ($1, $2);
 
 -- Delete a credit card for customer
 DELETE FROM CreditCards
 WHERE customerId = $1 AND cardNumber = $2
-
+;
 -- Use rewards points, $2 is points used
 UPDATE Customers
 SET rewardPoints = rewardPoints - $2
 WHERE customerId = $1
-
+;
 -- After customer selects payment mode
 UPDATE Orders
 SET paymentMode = $2
 WHERE orderId = $1
+;
 
 
 /* Restaurant Staff Related Functionalities */
@@ -69,14 +70,14 @@ WHERE orderId = $1
 SELECT R.restaurantId, R.area, R.name, R.minSpendingAmt
 FROM Restaurants R JOIN RestaurantStaff S USING (restaurantId)
 WHERE S.restStaffId = $1
-
+;
 -- View menu items for their restaurant ordered by [type]
 -- [type] is either price, amount left or category $2
 SELECT DISTINCT M.itemName, M.price, M.category, M.isAvailable, M.amtLeft
 FROM Menus M JOIN RestaurantStaff S USING (restaurantId)
 WHERE S.restStaffId = $1
 ORDER BY $2, M.itemName
-
+;
 -- Add a new menu item
 INSERT INTO Menus (restaurantId, itemName, price, category, amtLeft) VALUES ($1, $2, $3, $4, $5);
 
@@ -85,27 +86,27 @@ INSERT INTO Menus (restaurantId, itemName, price, category, amtLeft) VALUES ($1,
 UPDATE Menus
 SET itemName = $3
 WHERE itemName = $1 AND restaurantId = $2
-
+;
 -- Edit a menu items's price
 -- $1 = itemName, $2 = restaurantId,  $3 = price
 UPDATE Menus
 SET price = $3
 WHERE itemName = $1 AND restaurantId = $2
-
+;
 -- Edit a menu items's amount left
 -- $1 = itemName, $2 = restaurantId, $3 = amount left
 UPDATE Menus
 SET amtLeft = $3
 WHERE itemName = $1 AND restaurantId = $2
-
+;
 -- View the past reviews for their restaurant
-SELECT to_char(O.date,\'DD-Mon-YYYY\') as date, R.review, R.rating
+SELECT to_char(O.orderDate,\'DD-Mon-YYYY\') as orderDate, R.review, R.rating
 FROM Reviews R JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
     JOIN RestaurantStaff S USING (restaurantId)
 WHERE S.restStaffId = $1
-
+;
 -- Create a restaurant promotion with discount %
 -- $1 = startDate, $2 = endDate, $3 = % discount, $4 = minimumAmtSpent
 -- $5 = restaurantId
@@ -113,11 +114,11 @@ WITH newPromo as (
     INSERT INTO Promotions (type, startDate, endDate, discountPerc, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
     RETURNING promotionId --get the new promotionId
 )
-
+;
 INSERT INTO RestaurantPromotions (promotionId, restaurantId)
 SELECT promotionId, $5
 FROM newPromo
-
+;
 -- Create a restaurant promotion with fixed discount amount
 -- $1 = startDate, $2 = endDate, $3 = discount amount, $4 = minimumAmtSpent
 -- $5 = restaurantId
@@ -125,54 +126,54 @@ WITH newPromo as (
     INSERT INTO Promotions (type, startDate, endDate, discountAmt, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
     RETURNING promotionId --get the new promotionId
 )
-
+;
 INSERT INTO RestaurantPromotions (promotionId, restaurantId)
 SELECT promotionId, $5
 FROM newPromo
-
+;
 -- Edit start and end date of restaurant promotion
 UPDATE Promotions
 SET startDate = $2 AND endDate = $3
 WHERE promotionId = $1
-
+;
 -- Edit discount % of restaurant promotion
 UPDATE Promotions
 SET discountPerc = $2
 WHERE promotionId = $1
-
+;
 -- Edit discount amount of restaurant promotion
 UPDATE Promotions
 SET discountAmt = $2
 WHERE promotionId = $1
-
+;
 -- Edit minimumAmtSpent of restaurant promotion
 UPDATE Promotions
 SET minimumAmtSpent = $2
 WHERE promotionId = $1
-
+;
 -- View summary information for orders
 -- 1) Total number of completed orders
 -- 2) Total cost of all completed orders (excluding delivery fees)
-SELECT year, month, COUNT(orderId) AS totalCompletedOrders, SUM(totalCost) As totalCompletedCost
+SELECT orderYear, orderMonth, COUNT(orderId) AS totalCompletedOrders, SUM(totalCost) As totalCompletedCost
 FROM (
-    SELECT DISTINCT EXTRACT(YEAR FROM (O.date)) AS year, EXTRACT(MONTH FROM (O.date)) as month, O.orderId, O.totalCost
+    SELECT DISTINCT EXTRACT(YEAR FROM (O.orderDate)) AS orderYear, EXTRACT(MONTH FROM (O.orderDate)) as orderMonth, O.orderId, O.totalCost
     FROM Orders O
     WHERE O.arrivalTimeAtDestination <> NULL --completed order
     AND O.restaurantID = $1
-    AND EXTRACT(YEAR FROM (O.date)) = $2 AND EXTRACT(MONTH FROM (O.date)) = $3)
-GROUP BY year, month
-
+    AND EXTRACT(YEAR FROM (O.orderDate)) = $2 AND EXTRACT(MONTH FROM (O.orderDate)) = $3)
+GROUP BY orderYear, orderMonth
+;
 -- 3) Top 5 favorite food items (in terms of the number of orders for that item)
-WITH TopFiveFoodItems (year, month, itemName, totalOrders) AS (
-    SELECT DISTINCT EXTRACT(YEAR FROM (O.date)) AS year, EXTRACT(MONTH FROM (O.date)) as month, OD.itemName as itemName, SUM(OD.quantity) as totalOrders
+WITH TopFiveFoodItems (orderYear, orderMonth, itemName, totalOrders) AS (
+    SELECT DISTINCT EXTRACT(YEAR FROM (O.orderDate)) AS orderYear, EXTRACT(MONTH FROM (O.orderDate)) as orderMonth, OD.itemName as itemName, SUM(OD.quantity) as totalOrders
     FROM OrderDetails OD JOIN Orders O USING (orderId)
     WHERE O.arrivalTimeAtDestination <> NULL --completed order
     AND OD.restaurantId = $1
-    GROUP BY year, month, food
+    GROUP BY orderYear, orderMonth, food
     ORDER BY totalOrders DESC
     LIMIT 5
 )
-
+;
 -- View summary information for promotions
 -- 1) Duration of promotion campaign in terms of days or hours (if days < 0)
 -- 2) average number of orders received during the promotion per day or hours (if days < 0)
@@ -198,11 +199,12 @@ SELECT DISTINCT D.promotionId, totalOrders, durationInDays, durationInHours,
                     ELSE 0
                     END AS avgOrdersPerDay,
                 CASE
-                    WHEN durationInDays = 0 AND durationInHours = 0 then 0
-                    ELSE ROUND(OM.totalOrders/(durationInHours - (durationInDays * 24))::NUMERIC, 2)
+                    WHEN durationInDays = 0 AND durationInHours = 0 THEN 0
+                    ELSE ROUND(OM.totalOrders/durationInHours)::NUMERIC, 2)
                     END AS aveOrdersPerHour
 FROM Duration D LEFT JOIN OrdersMade OM using (promotionId)
 ORDER BY OM.orderId DESC
+;
 
 /* Delivery Rider Related Functionalities */
 
@@ -212,12 +214,14 @@ Select distinct FT.riderId, EXTRACT(YEAR from WW.workDate) as year, EXTRACT(MONT
 From  FullTime FT
 Inner join WorkingWeeks WW using (riderId)
 Group by FT.riderID, EXTRACT(YEAR from WW.workDate), EXTRACT(MONTH from WW.workDate)
+Order by FT.riderId; 
 
 /*PART TIME*/
 Select distinct PT.riderId, EXTRACT(YEAR from WD.workDate) as year, EXTRACT(MONTH  from WD.workDate) as month, SUM(WD.numCompleted) as totalOrders
 From PartTime PT
 Inner join WorkingDays WD using (riderId)
-Group by PT.riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate);
+Group by PT.riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate)
+Order by PT.riderId;
 
 /*View total salary earned by each rider for each month*/
 /*PartTime*/
@@ -256,8 +260,7 @@ Inner join computeFT using (riderId)
 ;
 
 /*create weekly work schedule for PartTime*/
-riderId, workDate, shiftId, numCompleted
-$1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
+-- $1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
 Begin;
 Update WorkingDays 
 Set riderId = $1
@@ -272,8 +275,7 @@ where $1 exists (
 Commit;
 
 /*create monthly work schedule for FullTime*/
-riderId, workDate, shiftId, numCompleted
-$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
+--$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
 Begin;
 Update WorkingWeeks 
 Set riderId = $1
@@ -372,7 +374,7 @@ Select FT.riderId, extract(year from WW.workDate), extract(month from WW.workDat
 		Where WW.numCompleted > 0 and FT.riderId = $1;
 Group by extract(year from WW.workDate), extract(month from WW.workDate)
 	When type = ‘PartTime’ then
-Select distinct PT.riderId, extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month, sum(extract(‘hour’, WD.intervalEnd – WD.intervalStart) * 60 + extract(‘minute’, WD.intervalEnd = WD.intervalStart):: decimal /60 as totalHours
+Select PT.riderId, extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month, sum(extract(‘hour’, WD.intervalEnd – WD.intervalStart) * 60 + extract(‘minute’, WD.intervalEnd = WD.intervalStart):: decimal /60 as totalHours
 		From PartTime PT
 		Inner join WorkingDays WD using (riderId)
 		Where WD.numCompleted > 0 and PT.riderId = $1;
