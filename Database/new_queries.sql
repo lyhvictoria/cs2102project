@@ -358,3 +358,17 @@ GROUP BY D.riderId, extract(month from o.orderDate)
 SELECT extract(year from ) as year, extract (month from ) as month, as TotalOrderCosts, as TotalNewCustomers
 from
 WHERE
+
+
+-- View total number of orders placed by each customers for each month
+SELECT extract(year from orderDate) as year, extract (month from orderDate) as month, customerId, COUNT(OrderID)
+FROM Orders O
+WHERE O.customerId = $1
+GROUP BY extract(year from orderDate), extract (month from orderDate), customerId
+
+-- View total cost of orders placed by each customer for each month
+SELECT extract(year from orderDate) as year, extract (month from orderDate) as month, customerId, SUM(totalCost)
+FROM Orders O
+WHERE O.customerId = $1
+GROUP BY extract(year from orderDate), extract (month from orderDate), customerId
+
