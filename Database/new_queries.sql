@@ -22,15 +22,15 @@ SELECT DISTINCT itemName, price, category, isAvailable, amtLeft
 FROM Menus
 WHERE restaurantId = $1
 ;
--- View all the reviews of restaurant selected
-SELECT DISTINCT  to_char(O.orderDate,\'DD-Mon-YYYY\') as orderDate, R.name, R.review, R.rating
+-- View all the reviews of restaurant selected *
+SELECT DISTINCT  O.orderDate, R.name, R.review, R.rating
 FROM Reviews R JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
 WHERE R.name = $1
 ;
--- View all their past reviews
-SELECT DISTINCT to_char(O.orderDate,\'DD-Mon-YYYY\') as orderDate, R.name, R.review, R.rating
+-- View all their past reviews *
+SELECT DISTINCT O.orderDate, R.name, R.review, R.rating
 FROM Reviews R JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
@@ -60,9 +60,12 @@ RETURNING orderId --get the new orderId
 -- Add items to order (trigger will update orderCost)
 INSERT INTO OrderDetails (orderId, restaurantId, itemName, quantity) VALUES ($1, $2, $3, $4);
 
+-- Add location to Locations
+INSERT INTO CustomerLocations (custLocation, area) VALUES $1, $2
+
 -- Add location to order
 UPDATE Orders
-SET deliveryLocation = $1, deliveryLocationArea = $3
+SET deliveryLocation = $1
 WHERE orderId = $1
 ;
 -- Add a promotion to order
@@ -137,7 +140,7 @@ SET amtLeft = $3
 WHERE itemName = $1 AND restaurantId = $2
 ;
 -- View the past reviews for their restaurant
-SELECT to_char(O.orderDate,\'DD-Mon-YYYY\') as orderDate, R.review, R.rating
+SELECT O.orderDate, R.review, R.rating
 FROM Reviews R JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
@@ -186,17 +189,19 @@ UPDATE Promotions
 SET minimumAmtSpent = $2
 WHERE promotionId = $1
 ;
--- View summary information for orders
+-- View summary information for orders for specific year and month
 -- 1) Total number of completed orders
 -- 2) Total cost of all completed orders (excluding delivery fees)
-SELECT orderYear, orderMonth, COUNT(orderId) AS totalCompletedOrders, SUM(totalCost) As totalCompletedCost
-FROM (
+WITH temp AS (
     SELECT DISTINCT EXTRACT(YEAR FROM (O.orderDate)) AS orderYear, EXTRACT(MONTH FROM (O.orderDate)) as orderMonth, O.orderId, O.totalCost
     FROM Orders O
     WHERE O.arrivalTimeAtDestination <> NULL --completed order
     AND O.restaurantID = $1
-    AND EXTRACT(YEAR FROM (O.orderDate)) = $2 AND EXTRACT(MONTH FROM (O.orderDate)) = $3)
-GROUP BY orderYear, orderMonth
+    AND EXTRACT(YEAR FROM (O.orderDate)) = $2 AND EXTRACT(MONTH FROM (O.orderDate)) = $3
+)
+
+SELECT orderYear, orderMonth, COUNT(orderId) AS totalCompletedOrders, SUM(totalCost) As totalCompletedCost
+FROM temp
 ;
 -- 3) Top 5 favorite food items (in terms of the number of orders for that item)
 WITH TopFiveFoodItems (orderYear, orderMonth, itemName, totalOrders) AS (
@@ -204,18 +209,21 @@ WITH TopFiveFoodItems (orderYear, orderMonth, itemName, totalOrders) AS (
     FROM OrderDetails OD JOIN Orders O USING (orderId)
     WHERE O.arrivalTimeAtDestination <> NULL --completed order
     AND OD.restaurantId = $1
-    GROUP BY orderYear, orderMonth, food
+    GROUP BY orderYear, orderMonth, itemName
     ORDER BY totalOrders DESC
     LIMIT 5
 )
+
+SELECT *
+FROM TopFiveFoodItems
 ;
 -- View summary information for promotions
--- 1) Duration of promotion campaign in terms of days or hours (if days < 0)
--- 2) average number of orders received during the promotion per day or hours (if days < 0)
+-- 1) Duration of promotion campaign in terms of days or hours
+-- 2) average number of orders received during the promotion per day or hour
 WITH Duration AS (
     SELECT DISTINCT P.promotionId,
-                    DATE_PART(\'day\', endDate::date - startDate::date) as durationInDays,
-                    DATE_PART(\'hour\', endDate::timestamp - startDate::timestamp) as durationInHours
+                    (endDate::date - startDate::date) as durationInDays::NUMERIC,
+                    (endDate::date - startDate::date) * 24 as durationInHours::NUMERIC
     FROM RestaurantPromotions R JOIN Promotions P USING (promotionId))
     WHERE R.restaurantId = $1
     ),
@@ -230,12 +238,12 @@ WITH Duration AS (
 
 SELECT DISTINCT D.promotionId, totalOrders, durationInDays, durationInHours,
                 CASE
-                    WHEN durationInDays > 0 THEN ROUND(OM.totalOrders/durationInDays::NUMERIC, 2)
+                    WHEN durationInDays > 0 THEN ROUND(OM.totalOrders/durationInDays, 2)
                     ELSE 0
                     END AS avgOrdersPerDay,
                 CASE
                     WHEN durationInDays = 0 AND durationInHours = 0 THEN 0
-                    ELSE ROUND(OM.totalOrders/durationInHours)::NUMERIC, 2)
+                    ELSE ROUND(OM.totalOrders/durationInHours), 2)
                     END AS aveOrdersPerHour
 FROM Duration D LEFT JOIN OrdersMade OM using (promotionId)
 ORDER BY OM.orderId DESC
