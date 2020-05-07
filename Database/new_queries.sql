@@ -23,15 +23,15 @@ FROM Menus
 WHERE restaurantId = $1
 ;
 -- View all the reviews of restaurant selected *
-SELECT DISTINCT  O.orderDate, R.name, R.review, R.rating
-FROM Reviews R JOIN Orders O USING (orderId)
+SELECT DISTINCT  O.orderDate, R.name, RV.review, RV.rating
+FROM Reviews RV JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
 WHERE R.name = $1
 ;
 -- View all their past reviews *
-SELECT DISTINCT O.orderDate, R.name, R.review, R.rating
-FROM Reviews R JOIN Orders O USING (orderId)
+SELECT DISTINCT O.orderDate, R.name, RV.review, RV.rating
+FROM Reviews RV JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
     JOIN Restaurants R USING (restaurantId)
 WHERE O.customerId = $1
