@@ -374,7 +374,7 @@ Select FT.riderId, extract(year from WW.workDate), extract(month from WW.workDat
 		Where WW.numCompleted > 0 and FT.riderId = $1;
 Group by extract(year from WW.workDate), extract(month from WW.workDate)
 	When type = ‘PartTime’ then
-Select distinct PT.riderId, extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month, sum(extract(‘hour’, WD.intervalEnd – WD.intervalStart) * 60 + extract(‘minute’, WD.intervalEnd = WD.intervalStart):: decimal /60 as totalHours
+Select PT.riderId, extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month, sum(extract(‘hour’, WD.intervalEnd – WD.intervalStart) * 60 + extract(‘minute’, WD.intervalEnd = WD.intervalStart):: decimal /60 as totalHours
 		From PartTime PT
 		Inner join WorkingDays WD using (riderId)
 		Where WD.numCompleted > 0 and PT.riderId = $1;
