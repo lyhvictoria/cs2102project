@@ -212,12 +212,14 @@ Select distinct FT.riderId, EXTRACT(YEAR from WW.workDate) as year, EXTRACT(MONT
 From  FullTime FT
 Inner join WorkingWeeks WW using (riderId)
 Group by FT.riderID, EXTRACT(YEAR from WW.workDate), EXTRACT(MONTH from WW.workDate)
+Order by FT.riderId; 
 
 /*PART TIME*/
 Select distinct PT.riderId, EXTRACT(YEAR from WD.workDate) as year, EXTRACT(MONTH  from WD.workDate) as month, SUM(WD.numCompleted) as totalOrders
 From PartTime PT
 Inner join WorkingDays WD using (riderId)
-Group by PT.riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate);
+Group by PT.riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate)
+Order by PT.riderId;
 
 /*View total salary earned by each rider for each month*/
 /*PartTime*/
