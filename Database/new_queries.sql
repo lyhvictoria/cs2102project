@@ -321,3 +321,40 @@ Group by DR.riderId, EXTRACT(YEAR FROM O.date), EXTRACT(MONTH FROM O.date);
 
 /* FDS Manager Rider Related Functionalities */
 
+/*View for each hour for each delivery location area
+-- Total orders
+View for each month for each rider
+-- Total deliveries
+-- Total man-hours
+-- Total salary
+-- Average rating
+-- Average delivery time
+For each month, can view:
+-- Total number of new customers
+-- Total number of orders
+-- Total cost of all orders
+For each month and each customer, can view:
+-- Total number of orders placed by the customer
+-- Total cost of all these orders
+For each restaurant, can view: (?)
+-- The ratings given to a specific restaurant
+-- The food item that is most popular*/
+
+-- View total orders for each delivery location area
+SELECT extract(hour from o.orderTime) as Hour, COUNT(*) as TotalOrders, o.deliveryLocationArea as Area
+FROM Orders o
+WHERE o.orderDate = $1
+GROUP BY extract(hour from o.orderTime), o.deliveryLocationArea
+;
+
+-- View summary for each rider INCOMPLETE!!!!!!
+SELECT d.riderId, count(d.orderId)
+FROM Delivers d INNER JOIN Orders o ON (d.orderId = o.orderId)
+WHERE extract(year from o.orderDate) = $1
+GROUP BY D.riderId, extract(month from o.orderDate)
+;
+
+-- View # new custs & orders & total cost of all orders for each monthly  INCOMPLETE!!!!!
+SELECT extract(year from ) as year, extract (month from ) as month, as TotalOrderCosts, as TotalNewCustomers
+from
+WHERE
