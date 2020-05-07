@@ -97,7 +97,7 @@ CREATE TABLE Promotions (
 	discountAmt INTEGER CHECK (discountAmt >= 0),
 	minimumAmtSpent INTEGER CHECK (minimumAmtSpent >= 0) DEFAULT 0,
 	PRIMARY key (promotionId),
-	CHECK (startDate < endDate)
+	CHECK (startDate <= endDate)
 );
 
 CREATE TABLE RestaurantPromotions (
@@ -285,9 +285,9 @@ create or replace function update_isAvailable() returns trigger as $$
 begin
 	if NEW.amtLeft = 0 then
 		UPDATE Menus M
-		SET isAvailable = false;
+		SET isAvailable = false
 		WHERE M.itemName = NEW.itemName
-		AND M.restaurantId = NEW.restaurantId
+		AND M.restaurantId = NEW.restaurantId;
 	end if;
 	RETURN NEW;
 end;
