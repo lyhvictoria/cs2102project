@@ -416,14 +416,6 @@ Select PT.riderId, extract(year from WD.workDate) as year, extract (month from  
 Group by extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month
 ;
 
---view for each month, each rider, total salary
-With determine_PT_FT as (
-	Select DR.type as type 
-	From DeliveryRiders DR
-	Where riderId = $1
-	;
-)
-
 With computeFT as (
 Select FT.riderId as riderId, FT.monthlyBasePay as basePay, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, sum(WW.numcCompleted) as completed
 From FullTime FT
@@ -468,5 +460,4 @@ Inner join Orders O using orderId
 Where D.riderId = $1
 Group by extract(year from O.date), extract(month from O.date)
 ;
-
 
