@@ -206,6 +206,119 @@ ORDER BY OM.orderId DESC
 
 /* Delivery Rider Related Functionalities */
 
+/* view total number of orders delivered by each rider for each month and year */
+/*FULL TIME*/
+Select distinct FT.riderId, EXTRACT(YEAR from WW.workDate) as year, EXTRACT(MONTH from WW.workDate) as month, SUM(WW.numCompleted) as totalOrders
+From  FullTime FT
+Inner join WorkingWeeks WW using (riderId)
+Group by FT.riderID, EXTRACT(YEAR from WW.workDate), EXTRACT(MONTH from WW.workDate)
+
+/*PART TIME*/
+Select distinct PT.riderId, EXTRACT(YEAR from WD.workDate) as year, EXTRACT(MONTH  from WD.workDate) as month, SUM(WD.numCompleted) as totalOrders
+From PartTime PT
+Inner join WorkingDays WD using (riderId)
+Group by PT.riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate);
+
+/*View total salary earned by each rider for each month*/
+/*PartTime*/
+With computePT as (
+Select distinct PT.riderId as riderId,
+PT.weeklyBasePay as basePay,
+Extract (year from WD.workDate) as year,
+Extract (month from WD.workDate) as month,
+Count(distinct extract(week from WD.workDate)) as totalNumOfWeeksWorked,
+Sum(WD.numCompleted) as complete
+From PartTime as PT
+Inner join WorkingDays WD using (riderId)
+where WD.numCompleted > 0
+group by PT.riderId, extract(year from WD.workdate), extract(month from WD.workDate)
+)
+Select DR.riderId, computePT.year as year, computePT.month as month, computePT.complete * computePT.basePay + computePT.complete * DR.deliveryFee + computePT.totalNumOfWeeksWorked * computePt.basePay as monthlyPay
+From DeliveryRiders DR
+Inner join computePT using (riderId)
+;
+
+/*FullTime*/
+With ComputeFT as (
+Select distinct FT.riderId as riderId,
+FT.monthlyBasePay as basePay,
+Extract(year from WW.workDate) as year,
+Extract(month from WW.workDate) as month, 
+Sum(WW.numCompleted) as completed
+From FullTime FT
+Inner join WorkingWeeks WW using (riderId)
+Where WW.numCompleted > 0
+Group by FT.riderId, extract(year from WW.workDate), extract(month from WW.workdate)
+)
+Select DR.riderId, computeFT.year as year, computeFT.month as month, (DR.deliveryFee * computeFT.completed + computeFT.completed * computeFT.basePay) as monthlySalary
+From DeliveryRiders DR
+Inner join computeFT using (riderId)
+;
+
+/*create weekly work schedule for PartTime*/
+riderId, workDate, shiftId, numCompleted
+$1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
+Begin;
+Update WorkingDays 
+Set riderId = $1
+       Workdate = $2 
+       IntervalStart = $3
+       IntervalEnd = $4
+       numCompleted = $5
+where $1 exists (
+	select riderId 
+	from deliveryRiders
+);
+Commit;
+
+/*create monthly work schedule for FullTime*/
+riderId, workDate, shiftId, numCompleted
+$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
+Begin;
+Update WorkingWeeks 
+Set riderId = $1
+       Workdate = $2 
+       shiftId = $3
+       numCompleted = $4
+where $1 exists (
+	select riderId 
+	from deliveryRiders
+);
+Commit;
+
+/*View the total number of hours worked for each week and month*/ - fulltime & parttime
+/*Full Time*/
+Select distinct FT.riderId, EXTRACT(YEAR from WW.workDate) as year, EXTRACT(MONTH from WW.workDate) as month, count(shiftID) * 8 as totalHours
+From FullTime FT
+Inner join WorkingWeeks WW using (riderId)
+where WW.numCompleted > 0 
+Group by FT.riderId, EXTRACT(YEAR FROM WW.workDate), EXTRACT(MONTH FROM WW.workDate)
+UNION
+/*PART TIME*/
+Select distinct PT.riderId, EXTRACT(YEAR from WD.workDate) as year, EXTRACT(MONTH from  WD.workDate) as month, 
+/*convert to minutes first then convert back to hours after adding in minutes from interval*/
+sum(DATE_PART('hour', WD.intervalEnd - WD.intervalStart) * 60 
++ DATE_PART('minute', WD.intervalEnd - WD.intervalStart))::decimal / 60 as totalHours
+From PartTime PT
+Inner join WorkingDays WD using (riderId)
+Where WD.numCompleted > 0 
+Group by .riderId, EXTRACT(YEAR from WD.workDate), EXTRACT(MONTH from WD.workDate);
+
+/*View number of ratings received by riders for each month*/
+Select distinct DR.riderId, EXTRACT(YEAR FROM O.date) as year, EXTRACT(MONTH from O.date) as month, count(D.rating ) as totalRatings
+From DeliveryRiders DR
+Left join Delivers D using (riderId)
+Left join Orders O using (orderId)
+Group by DR.riderId, EXTRACT(YEAR FROM O.date), EXTRACT(MONTH FROM O.date);
+
+/*View average rating received for rider for each month*/ - additional feature
+Select distinct DR.riderId, EXTRACT(YEAR FROM O.date) as year, EXTRACT(MONTH from O.date) as month, avg(D.rating ) as averageRatings
+From DeliveryRiders RD
+Left join Delivers D using (riderId)
+Left join Orders O using (orderId)
+Group by DR.riderId, EXTRACT(YEAR FROM O.date), EXTRACT(MONTH FROM O.date);
+
+
 /* FDS Manager Rider Related Functionalities */
 
 /*View for each hour for each delivery location area
