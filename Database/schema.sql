@@ -245,7 +245,7 @@ CREATE TABLE Last_5_Dests (
 create or replace function check_isAvailable() returns trigger as $$
 DECLARE currAvailAmt INTEGER;
 DECLARE qtyOrdered INTEGER;
-DECLARE item_price NUMERIC;
+DECLARE itemPrice NUMERIC;
 
 begin
 	qtyOrdered := NEW.quantity;
@@ -254,7 +254,7 @@ begin
 	FROM Menus M
 	WHERE M.itemName = NEW.itemName
 	AND M.restaurantId = NEW.restaurantId;
-	SELECT price into item_price
+	SELECT price into itemPrice
 	FROM Menus M
 	WHERE M.itemName = NEW.itemName
 	AND M.restaurantId = NEW.restaurantId;
@@ -267,7 +267,7 @@ begin
 		SET amtLeft = amtLeft - qtyOrdered
 		WHERE M.itemName = NEW.itemName
 		AND M.restaurantId = NEW.restaurantId;
-		NEW.orderCost = qtyOrdered * item_price;
+		NEW.orderCost = qtyOrdered * itemPrice;
 		RETURN NEW;
 
 	end if;
@@ -284,8 +284,10 @@ execute function check_isAvailable();
 create or replace function update_isAvailable() returns trigger as $$
 begin
 	if NEW.amtLeft = 0 then
-		UPDATE Menus
+		UPDATE Menus M
 		SET isAvailable = false;
+		WHERE M.itemName = NEW.itemName
+		AND M.restaurantId = NEW.restaurantId
 	end if;
 	RETURN NEW;
 end;
@@ -300,13 +302,13 @@ execute function update_isAvailable();
 -- Auto add rewards points
 create or replace function insert_default_points() returns trigger as $$
 begin
-	Update Customers
-	Set rewardPoints = rewardPoints + Trunc(NEW.orderCost)
-	Where exists (
-		select 1
-		from Orders O
-		where O.orderId = New.orderId
-		and O.customerId = Customers.customerId);
+	UPDATE Customers
+	SET rewardPoints = rewardPoints + Trunc(NEW.orderCost)
+	WHERE EXISTS (
+		SELECT 1
+		FROM Orders O
+		WHERE O.orderId = NEW.orderId
+		AND O.customerId = Customers.customerId);
 	RETURN NULL;
 end;
 $$ language plpgsql;
@@ -331,7 +333,6 @@ begin
 	RETURN NEW;
 end;
 $$ language plpgsql;
-
 
 Create trigger calculate_total_costs_trigger
 After update or insert
