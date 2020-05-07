@@ -372,3 +372,14 @@ FROM Orders O
 WHERE O.customerId = $1
 GROUP BY extract(year from orderDate), extract (month from orderDate), customerId
 
+-- View restaurant all ratings for given restaurant
+SELECT O.restaurantId, Res.name, R.Rating, R.Review, Ord.customerId
+FROM Reviews R, OrderDetails O, Restaurants Res, Orders ord
+WHERE O.restaurantId = 2 and Res.restaurantId = 2 and O.OrderId = R.orderId and Ord.orderId = O.orderId
+
+-- View food item by popularity for given restaurant
+SELECT OD.itemName, SUM(OD.quantity)
+FROM OrderDetails OD
+WHERE OD.restaurantId = 2
+GROUP BY OD.restaurantId, OD.itemName
+Order By  SUM(OD.quantity) desc, OD.itemName
