@@ -517,7 +517,7 @@ insert into Delivers (orderId, riderId, rating) values (3, 21, NULL);
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (4, '2020-05-07', 'S100170', 0, '15:10:00', '16:00:00', '16:05:00', '16:10:00', '16:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (4, 3, 'Pork Chops', 3, 57.6);
 insert into Delivers (orderId, riderId, rating) values (4, 22, NULL);
-insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (5, '2020-05-07', 'S100190', 0, '17:27:00', '18:00:00', '18:05:00', '18:10:00', '18:15:00', 'Card');
+insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (5, '2020-05-07', 'S100190', 0, '18:00:00', '18:02:00', '18:05:00', '18:10:00', '18:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (5, 6, 'Mushroom Risotto', 3, 53.1);
 insert into Delivers (orderId, riderId, rating) values (5, 22, NULL);
 

@@ -304,32 +304,12 @@ Inner join computeFT using (riderId)
 
 /*create weekly work schedule for PartTime*/
 -- $1 = riderId, $2 = workDate, $3 = IntervalStart, $4 = IntervalEnd, $5 = numCompleted
-Begin;
-Update WorkingDays
-Set riderId = $1
-       Workdate = $2
-       IntervalStart = $3
-       IntervalEnd = $4
-       numCompleted = $5
-where $1 exists (
-	select riderId
-	from deliveryRiders
-);
-Commit;
+
+Insert into WorkingDays ($1, $2, $3, $4, $5);
 
 /*create monthly work schedule for FullTime*/
 --$1 = riderId, $2 = workDate, $3 = shiftId, $4 = numcompleted
-Begin;
-Update WorkingWeeks
-Set riderId = $1
-       Workdate = $2
-       shiftId = $3
-       numCompleted = $4
-where $1 exists (
-	select riderId
-	from deliveryRiders
-);
-Commit;
+Insert into WorkDays ($1, $2, $3, $4);
 
 /*View the total number of hours worked for each week and month*/ - fulltime & parttime
 /*Full Time*/
@@ -342,8 +322,10 @@ UNION
 /*PART TIME*/
 Select distinct PT.riderId, EXTRACT(YEAR from WD.workDate) as year, EXTRACT(MONTH from  WD.workDate) as month,
 /*convert to minutes first then convert back to hours after adding in minutes from interval*/
-sum(DATE_PART('hour', WD.intervalEnd - WD.intervalStart) * 60
-+ DATE_PART('minute', WD.intervalEnd - WD.intervalStart))::decimal (10,2) / 60 as totalHours
+
+TRUNC((sum(DATE_PART('hour', WD.intervalEnd - WD.intervalStart) * 60
++ DATE_PART('minute', WD.intervalEnd - WD.intervalStart))::decimal / 60), 2) as totalHours
+
 From PartTime PT
 Inner join WorkingDays WD using (riderId)
 Where WD.numCompleted > 0
@@ -355,6 +337,8 @@ From DeliveryRiders DR
 Left join Delivers D using (riderId)
 Left join Orders O using (orderId)
 Group by DR.riderId, EXTRACT(YEAR FROM O.orderDate), EXTRACT(MONTH FROM O.orderDate);
+
+
 
 /*View average rating received for rider for each month*/ -- additional feature
 Select distinct DR.riderId, EXTRACT(YEAR FROM O.orderDate) as year, EXTRACT(MONTH from O.orderDate) as month, avg(D.rating ) as averageRatings
@@ -402,36 +386,22 @@ GROUP BY d.riderId, extract(month from o.orderDate), extract(year from o.orderDa
 
 
 --View for each month, each rider, total man hours
-With determine_PT_FT as (
-	Select DR.type as type
-	From DeliveryRiders DR
-	Where riderId = $1
-	;
-)
 
-
-Select determine_PT_FT.type as type, case
-	When type = ‘FullTime’ then
 Select FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate), count(shiftId) * 8 as totalHours
-		From FullTime FT
-		Inner join WorkingWeeks WW using (riderId)
-		Where WW.numCompleted > 0 and FT.riderId = $1;
+From FullTime FT
+Inner join WorkingWeeks WW using (riderId)
+Where WW.numCompleted > 0 and FT.riderId = $1;
 Group by extract(year from WW.workDate), extract(month from WW.workDate)
-	When type = ‘PartTime’ then
+
+/*PartTime*/
 Select PT.riderId, extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month, sum(extract(‘hour’, WD.intervalEnd – WD.intervalStart) * 60 + extract(‘minute’, WD.intervalEnd = WD.intervalStart):: decimal /60 as totalHours
-		From PartTime PT
-		Inner join WorkingDays WD using (riderId)
-		Where WD.numCompleted > 0 and PT.riderId = $1;
+From PartTime PT
+Inner join WorkingDays WD using (riderId)
+Where WD.numCompleted > 0 and PT.riderId = $1;
 Group by extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month
 ;
 
 --view for each month, each rider, total salary
-With determine_PT_FT as (
-	Select DR.type as type
-	From DeliveryRiders DR
-	Where riderId = $1
-	;
-)
 
 With computeFT as (
 Select FT.riderId as riderId, FT.monthlyBasePay as basePay, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, sum(WW.numcCompleted) as completed
@@ -440,29 +410,28 @@ Inner join workingWeeks WW using (riderId)
 Where WW.numCompleted > 0 and riderId = $1
 Group by extract(year from WW.workDate) as year, extract(month from WW.workDate) as month;
 )
+Select DR.riderId, computeFT.year as year, computeFT.month as month, (DR.deliveryFee * computeFT.completed + computeFT.completed * computeFT.basePay) as monthlyTotalSalary
+From DeliveryRiders DR
+Inner join computeFT using (riderId);
 
+/*PartTime*/
 With computePT as (
 Select PT.riderId as riderId, PT.weeklyBasePay as basePay, extract (year from WD.workDate) as year, extract (month from WD.workDate) as month, Count(distinct extract(week from WD.workDate)) as totalNumOfWeeksWorked, Sum(WD.numCompleted) as complete
 From PartTime as PT
 Inner join WorkingDays WD using (riderId)
 where WD.numCompleted > 0 and riderId = $1
 Group by extract(year from WW.workDate) as year, extract(month from WW.workDate) as month;
-
 )
 
-Select determine_PT_FT.type as type case
-	When type = ‘FullTime’ then
-Select DR.riderId, computeFT.year as year, computeFT.month as month, (DR.deliveryFee * computeFT.completed + computeFT.completed * computeFT.basePay) as monthlyTotalSalary
-From DeliveryRiders DR
-Inner join computeFT using (riderId);
-	When type =’PartTime’, then
 Select DR.riderId, computePT.year as year, computePT.month as month, computePT.complete * computePT.basePay + computePT.complete * DR.deliveryFee + computePT.totalNumOfWeeksWorked * computePt.basePay as monthlyPay
 From DeliveryRiders DR
 Inner join computePT using (riderId);
 ;
 
 
---View for each month, each delivery rider, average rating
+
+--View for each month, each delivery rider, average rating 
+
 Select DR.riderId, EXTRACT(YEAR FROM O.orderDate) as year, EXTRACT(MONTH from O.orderDate) as month, avg(D.rating) as averageRatings
 From DeliveryRiders DR
 Left join Delivers D using (riderId)
