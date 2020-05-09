@@ -18,11 +18,18 @@ FROM Restaurants
 WHERE restaurantId = $1
 ;
 -- View menu items for restaurant selected
-SELECT DISTINCT itemName, price, category, isAvailable, amtLeft
+SELECT DISTINCT itemName, price, category, isAvailable
 FROM Menus
 WHERE restaurantId = $1
+AND isAvailable = 't'
 ;
--- View all the reviews of restaurant selected *
+-- View all menu items for all restaurants
+SELECT m.restaurantId, r.name, r.area, m.itemName, m.price, m.category
+FROM Menus m, Restaurants r
+WHERE m.restaurantId = r.restaurantId
+ORDER BY m.restaurantId
+;
+-- View all the reviews of restaurant selected
 SELECT DISTINCT  O.orderDate, R.name, RV.review, RV.rating
 FROM Reviews RV JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
@@ -37,11 +44,12 @@ FROM Reviews RV JOIN Orders O USING (orderId)
 WHERE O.customerId = $1
 ;
 -- View the average rating of restaurant selected
-SELECT Round(AVG(ALL R.rating),2) as avgRating
-FROM Reviews R JOIN Orders O USING (orderId)
+SELECT Rs.name, Round(AVG(ALL Rv.rating),2) as avgRating
+FROM Reviews Rv JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
-    JOIN Restaurants R USING (restaurantId)
-WHERE R.name = $1
+    JOIN Restaurants Rs USING (restaurantId)
+WHERE Rs.name = $1
+GROUP BY Rs.name
 ;
 -- Make a review for their order
 INSERT INTO Reviews (reviewId, orderId, review, rating) VALUES ($1, $2, $3, $4);
@@ -430,7 +438,7 @@ Inner join computePT using (riderId);
 
 
 
---View for each month, each delivery rider, average rating 
+--View for each month, each delivery rider, average rating
 
 Select DR.riderId, EXTRACT(YEAR FROM O.orderDate) as year, EXTRACT(MONTH from O.orderDate) as month, avg(D.rating) as averageRatings
 From DeliveryRiders DR
