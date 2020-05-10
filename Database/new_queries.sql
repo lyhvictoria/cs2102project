@@ -68,14 +68,13 @@ RETURNING orderId --get the new orderId
 -- Add items to order (trigger will update orderCost)
 INSERT INTO OrderDetails (orderId, restaurantId, itemName, quantity) VALUES ($1, $2, $3, $4);
 
--- Add location to Locations
-INSERT INTO CustomerLocations (custLocation, area) VALUES $1, $2
-
--- Add location to order
+-- Add location to order (ensure location is first in CustomerLocations )
+INSERT INTO CustomerLocations (custLocation, area) VALUES ($1, $2);
 UPDATE Orders
 SET deliveryLocation = $1
-WHERE orderId = $1
+WHERE orderId = $3
 ;
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 -- Add a promotion to order
 UPDATE Orders
 SET promotionId = $2
@@ -361,9 +360,9 @@ Group by DR.riderId, EXTRACT(YEAR FROM O.orderDate), EXTRACT(MONTH FROM O.orderD
 /*View for each hour for each delivery location area
 -- Total orders
 View for each month for each rider
--- Total deliveries
 -- Total man-hours
 -- Total salary
+-- Total deliveries
 -- Average rating
 -- Average delivery time
 For each month, can view:
@@ -378,34 +377,26 @@ For each restaurant, can view: (?)
 -- The food item that is most popular*/
 
 -- View total orders for each delivery location area
-SELECT extract(hour from o.orderTime) as Hour, COUNT(*) as TotalOrders, l.area as Area
+SELECT extract(hour from o.orderTime) as Hour, l.area as Area, COUNT(*) as TotalOrders
 FROM Orders o INNER JOIN CustomerLocations l ON (o.deliveryLocation = l.custLocation)
 WHERE o.orderDate = $1
 GROUP BY extract(hour from o.orderTime), l.custLocation
 ;
 
 -- For each month, each rider.....
---View for each month, each rider, total deliveries
-SELECT d.riderId, sum(d.orderId), extract(month from o.orderDate), extract(year from o.orderDate)
-FROM Delivers d INNER JOIN Orders o ON (d.orderId = o.orderId)
-WHERE extract(month from o.orderDate) = $1 and extract(year from o.orderDate) = $2 and d.riderId = $3
-GROUP BY d.riderId, extract(month from o.orderDate), extract(year from o.orderDate)
-;
-
-
 --View for each month, each rider, total man hours
 
-Select FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate), count(shiftId) * 8 as totalHours
+Select FT.riderId, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, count(shiftId) * 8 as totalHours
 From FullTime FT
 Inner join WorkingWeeks WW using (riderId)
-Where WW.numCompleted > 0 and FT.riderId = $1;
-Group by extract(year from WW.workDate), extract(month from WW.workDate)
-
+--Where WW.numCompleted > 0 and FT.riderId = $1
+Group by FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate)
+;
 /*PartTime*/
-Select PT.riderId, extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month, sum(extract(‘hour’, WD.intervalEnd – WD.intervalStart) * 60 + extract(‘minute’, WD.intervalEnd = WD.intervalStart):: decimal /60 as totalHours
+Select PT.riderId, extract(year from WD.workDate) as year, extract(month from WD.workDate) as month, sum(extract(‘hour’, WD.intervalEnd – WD.intervalStart) * 60 + extract(‘minute’, WD.intervalEnd = WD.intervalStart):: decimal) /60 as totalHours
 From PartTime PT
 Inner join WorkingDays WD using (riderId)
-Where WD.numCompleted > 0 and PT.riderId = $1;
+--Where WD.numCompleted > 0 and PT.riderId = $1;
 Group by extract(year from WD.workDate) as year, extract (month from  WD.workDate) as month
 ;
 
@@ -430,13 +421,18 @@ Inner join WorkingDays WD using (riderId)
 where WD.numCompleted > 0 and riderId = $1
 Group by extract(year from WW.workDate) as year, extract(month from WW.workDate) as month;
 )
-
 Select DR.riderId, computePT.year as year, computePT.month as month, computePT.complete * computePT.basePay + computePT.complete * DR.deliveryFee + computePT.totalNumOfWeeksWorked * computePt.basePay as monthlyPay
 From DeliveryRiders DR
 Inner join computePT using (riderId);
 ;
 
 
+--View for each month, each rider, total deliveries
+SELECT d.riderId, sum(d.orderId), extract(month from o.orderDate), extract(year from o.orderDate)
+FROM Delivers d INNER JOIN Orders o ON (d.orderId = o.orderId)
+WHERE extract(month from o.orderDate) = $1 and extract(year from o.orderDate) = $2 and d.riderId = $3
+GROUP BY d.riderId, extract(month from o.orderDate), extract(year from o.orderDate)
+;
 
 --View for each month, each delivery rider, average rating
 
