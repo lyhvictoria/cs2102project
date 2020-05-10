@@ -378,7 +378,7 @@ GROUP BY extract(hour from o.orderTime), l.custLocation
 
 -- For each month, each rider.....
 --View for each month, each rider, total deliveries
-SELECT d.riderId, sum(d.orderId), extract(month from o.orderDate), extract(year from o.orderDate)
+SELECT d.riderId, count(d.riderId), extract(month from o.orderDate), extract(year from o.orderDate)
 FROM Delivers d INNER JOIN Orders o ON (d.orderId = o.orderId)
 WHERE extract(month from o.orderDate) = $1 and extract(year from o.orderDate) = $2 and d.riderId = $3
 GROUP BY d.riderId, extract(month from o.orderDate), extract(year from o.orderDate)
