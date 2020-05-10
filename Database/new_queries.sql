@@ -376,7 +376,7 @@ For each restaurant, can view: (?)
 -- The ratings given to a specific restaurant
 -- The food item that is most popular*/
 
--- View total orders for each delivery location area
+-- View total orders for each delivery location area for each hour
 SELECT extract(hour from o.orderTime) as Hour, l.area as Area, COUNT(*) as TotalOrders
 FROM Orders o INNER JOIN CustomerLocations l ON (o.deliveryLocation = l.custLocation)
 WHERE o.orderDate = $1
@@ -393,17 +393,17 @@ GROUP BY d.riderId, extract(month from o.orderDate), extract(year from o.orderDa
 
 
 --View for each month, each rider, total man hours
+/*FullTimer*/
 Select FT.riderId, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, count(shiftId) * 8 as totalHours
 From FullTime FT
 Inner join WorkingWeeks WW using (riderId)
-Where WW.numCompleted > 0
 Group by FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate)
+;
 
 /*PartTime*/
-Select PT.riderId, extract(year from WD.workDate) as year, extract(month from  WD.workDate) as month, sum(extract(hour from (WD.intervalEnd – WD.intervalStart)) * 60 + extract(minute from (WD.intervalEnd = WD.intervalStart))):: decimal /60 as totalHours
+Select PT.riderId, extract(year from WD.workDate) as year, extract(month from WD.workDate) as month, (extract(hour from WD.intervalEnd) – extract(hour from WD.intervalStart)) as totalHours
 From PartTime PT
 Inner join WorkingDays WD using (riderId)
-Where WD.numCompleted > 0
 Group by PT.riderId, extract(year from WD.workDate), extract (month from  WD.workDate)
 ;
 
@@ -448,8 +448,8 @@ Left join Delivers D using (riderId)
 Left join Orders O using (orderId)
 Group by DR.riderId, extract(year FROM O.orderDate), extract(month FROM O.orderDate)
 Order by DR.riderId
-;                                                                                                                                                   
-                                                                                                                                               
+;
+
 --View for each month, each delivery rider, average delivery time
 Select D.riderId, extract(year from O.orderDate) as year, extract(month from O.orderDate) as month, avg((extract(hour from o.arrivalTimeAtDestination – o.departureTimeToRestaurant) * 60 + extract(minute from o.arrivalTimeAtDestination – o.departureTimeToRestaurant))::decimal /60) as averageDeliveryTime
 From Delivers D
@@ -462,7 +462,7 @@ Group by D.riderId, extract(year from O.orderDate), extract(month from O.orderDa
 SELECT extract(year from orderDate) as year, extract (month from orderDate) as month, O.customerId, COUNT(O.OrderId)
 FROM Orders O
 GROUP BY extract(year from orderDate), extract (month from orderDate), O.customerId
-ORDER BY O.customerId                                                                                                                                                    
+ORDER BY O.customerId
 ;
 
 -- View total cost of orders placed by each customer for each month
@@ -470,7 +470,7 @@ SELECT extract(year from orderDate) as year, extract(month from orderDate) as mo
 FROM Orders O
 WHERE O.customerId = $1
 GROUP BY extract(year from orderDate), extract (month from orderDate), O.customerId
-ORDER BY O.customerId                                                                                                                                                   
+ORDER BY O.customerId
 ;
 -- View restaurant all ratings for given restaurant
 SELECT O.restaurantId, Res.name, R.Rating, R.Review, Ord.customerId
