@@ -378,22 +378,29 @@ For each restaurant, can view: (?)
 
 -- For each month
 -- view total number of new Customers
+with v4_1 as (
 select year, month, count(customerId) as numNewCustomers
 from (
 	select distinct customerId, extract(year from startDate) as year, extract(month from startDate) as month
 	from Customers
 ) as Foo
 group by year, month
-order by year, month
-;
--- view total number of orders and total cost of these orders
+),
+v4_2 as (
 select year, month, count(orderId) as numOrders, sum(totalCost) as totalCostOfOrders
 from (
 	select distinct orderId, extract(year from orderDate) as year, extract(month from orderDate) as month, totalCost
 	from Orders
 ) as Bar
 group by year, month
-order by year, month
+)
+select case when one.year IS NULL then two.year else one.year end,
+case when one.month IS NULL then two.month else one.month end,
+case when one.numNewCustomers IS NULL then 0 else one.numNewCustomers end,
+case when two.numOrders IS NULL then 0 else two.numOrders end,
+case when two.totalCostOfOrders IS NULL then 0 else two.totalCostOfOrders end
+from v4_1 one full join v4_2 two on (one.year = two.year) and (one.month = two.month)
+order by one.year, one.month
 ;
 
 -- View total orders for each delivery location area for each hour
