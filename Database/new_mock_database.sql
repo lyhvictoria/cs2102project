@@ -367,41 +367,29 @@ insert into FullTime (riderId) values (26);
 insert into FullTime (riderId) values (27);
 
 -- Create WorkingWeeks
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-23', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-24', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-25', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-26', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-27', 1, 0);
-
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-03-31', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-01', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-02', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-03', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-04', 3, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-05', 3, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-07', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-08', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-09', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-10', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-11', 3, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-12', 3, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-14', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-15', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-16', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-17', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-18', 3, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-19', 3, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-21', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-22', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-23', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-24', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-25', 3, 0);
-
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-28', 3, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-29', 3, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-30', 3, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-01', 3, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-02', 3, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-04-26', 3, 0);
 
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-05', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-06', 3, 0);
@@ -409,29 +397,48 @@ INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-08', 3, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-09', 3, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-11', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-12', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-13', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-14', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-15', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-16', 1, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-20', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-21', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-19', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-20', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-21', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-22', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-23', 1, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-26', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-27', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-28', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-29', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(23, '2020-05-30', 1, 0);
+
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-01', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-02', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-03', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-04', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-05', 1, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-08', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-09', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-10', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-11', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-12', 1, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-15', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-16', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-17', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-18', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-19', 1, 0);
+
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-22', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-23', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-24', 1, 0);
-
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-25', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-26', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-27', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-28', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-29', 1, 0);
-
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-04-30', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-01', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-02', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-03', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-04', 1, 0);
 
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-05', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-06', 1, 0);
@@ -439,35 +446,92 @@ INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-08', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-09', 1, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-10', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-11', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-12', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-13', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-14', 1, 0);
-
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-15', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-16', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-17', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-18', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-19', 1, 0);
 
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-19', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-20', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-21', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-22', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-23', 1, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-26', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-27', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-28', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-29', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(24, '2020-05-30', 1, 0);
+
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-03', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-04', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-05', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-06', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-07', 2, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-10', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-11', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-12', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-13', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-14', 2, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-17', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-18', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-19', 2, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-20', 2, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-21', 2, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-22', 2, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-23', 2, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-24', 2, 0);
 
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-24', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-25', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-26', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-27', 2, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(25, '2020-04-28', 2, 0);
+
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-02', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-03', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-04', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-05', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-06', 4, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-09', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-10', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-11', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-12', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-13', 4, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-16', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-17', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-18', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-19', 4, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-20', 4, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-21', 4, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-22', 4, 0);
+
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-23', 4, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-24', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-25', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-26', 4, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(26, '2020-04-27', 4, 0);
 
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-04', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-05', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-06', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-07', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-08', 1, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-11', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-12', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-13', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-14', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-15', 1, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-18', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-19', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-20', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-21', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-22', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-23', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-24', 1, 0);
 
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-25', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-26', 1, 0);
@@ -475,29 +539,29 @@ INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-28', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-29', 1, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-04-30', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-01', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-02', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-03', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-04', 1, 0);
-
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-05', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-06', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-07', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-08', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-09', 1, 0);
 
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-10', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-11', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-12', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-13', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-14', 1, 0);
-
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-15', 1, 0);
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-16', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-17', 1, 0);
-INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-18', 1, 0);
+
 INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-19', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-20', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-21', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-22', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-23', 1, 0);
+
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-26', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-27', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-28', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-29', 1, 0);
+INSERT INTO WorkingWeeks(riderId, workDate, shiftID, numCompleted) VALUES(27, '2020-05-30', 1, 0);
 
 -- Create 5 Orders
 insert into CustomerLocations (custLocation, area) values ('S100123', 'North');
@@ -507,19 +571,19 @@ insert into CustomerLocations (custLocation, area) values ('S100170', 'West');
 insert into CustomerLocations (custLocation, area) values ('S100190', 'North');
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (1, '2020-05-06', 'S100123', 0, '11:59:20', '12:00:00', '12:05:00', '12:10:00', '12:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (1, 5, 'Miso Ramen', 3, 48.6);
-insert into Delivers (orderId, riderId, rating) values (1, 20, NULL);
+insert into Delivers (orderId, riderId, rating) values (1, 20, 3);
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (2, '2020-05-06', 'S100124', 0, '11:59:15', '12:00:00', '12:06:00', '12:16:00', '12:20:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (2, 4, 'Kung Pow Chicken', 3, 49.2);
-insert into Delivers (orderId, riderId, rating) values (2, 20, NULL);
+insert into Delivers (orderId, riderId, rating) values (2, 20, 0);
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (3, '2020-05-07', 'S100159', 0, '12:30:00', '13:00:00', '13:05:00', '13:10:00', '13:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (3, 2, 'Beef Burger', 3, 41.1);
-insert into Delivers (orderId, riderId, rating) values (3, 21, NULL);
+insert into Delivers (orderId, riderId, rating) values (3, 21, 1);
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (4, '2020-05-07', 'S100170', 0, '15:10:00', '16:00:00', '16:05:00', '16:10:00', '16:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (4, 3, 'Pork Chops', 3, 57.6);
-insert into Delivers (orderId, riderId, rating) values (4, 22, NULL);
+insert into Delivers (orderId, riderId, rating) values (4, 22, 2);
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (5, '2020-05-07', 'S100190', 0, '18:00:00', '18:02:00', '18:05:00', '18:10:00', '18:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) values (5, 6, 'Mushroom Risotto', 3, 53.1);
-insert into Delivers (orderId, riderId, rating) values (5, 22, NULL);
+insert into Delivers (orderId, riderId, rating) values (5, 22, 5);
 
 -- Create 5 Reviews
 insert into Reviews (orderId, review, rating) values (1, 'Fast and good', 4);
