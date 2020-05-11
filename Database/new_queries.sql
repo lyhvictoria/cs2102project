@@ -376,6 +376,26 @@ For each restaurant, can view: (?)
 -- The ratings given to a specific restaurant
 -- The food item that is most popular*/
 
+-- For each month
+-- view total number of new Customers
+select year, month, count(customerId) as numNewCustomers
+from (
+	select distinct customerId, extract(year from startDate) as year, extract(month from startDate) as month
+	from Customers
+) as Foo
+group by year, month
+order by year, month
+;
+-- view total number of orders and total cost of these orders
+select year, month, count(orderId) as numOrders, sum(totalCost) as totalCostOfOrders
+from (
+	select distinct orderId, extract(year from orderDate) as year, extract(month from orderDate) as month, totalCost
+	from Orders
+) as Bar
+group by year, month
+order by year, month
+;
+
 -- View total orders for each delivery location area for each hour
 SELECT extract(hour from o.orderTime) as Hour, l.area as Area, COUNT(*) as TotalOrders
 FROM Orders o INNER JOIN CustomerLocations l ON (o.deliveryLocation = l.custLocation)
@@ -383,100 +403,95 @@ WHERE o.orderDate = $1
 GROUP BY extract(hour from o.orderTime), l.custLocation
 ;
 
--- For each month, each rider.....
---View for each month, each rider, total deliveries
-SELECT d.riderId, count(d.riderId), extract(month from o.orderDate), extract(year from o.orderDate)
-FROM Delivers d INNER JOIN Orders o ON (d.orderId = o.orderId)
-WHERE extract(month from o.orderDate) = $1 and extract(year from o.orderDate) = $2
-GROUP BY d.riderId, extract(month from o.orderDate), extract(year from o.orderDate)
-;
-
-
---View for each month, each rider, total man hours
-/*FullTimer*/
-Select FT.riderId, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, count(shiftId) * 8 as totalHours
-From FullTime FT
-Inner join WorkingWeeks WW using (riderId)
-Group by FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate)
-;
-
-/*PartTime*/
-Select PT.riderId, extract(year from WD.workDate) as year, extract(month from WD.workDate) as month, (extract(hour from WD.intervalEnd) – extract(hour from WD.intervalStart)) as totalHours
-From PartTime PT
-Inner join WorkingDays WD using (riderId)
-Group by PT.riderId, extract(year from WD.workDate), extract (month from  WD.workDate)
-;
-
---view for each month, each rider, total salary
-/*FullTime*/
-With computeFT as (
-Select FT.riderId as riderId, FT.monthlyBasePay as basePay, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, sum(WW.numcCompleted) as completed
-From FullTime FT
-Inner join workingWeeks WW using (riderId)
-Where WW.numCompleted > 0
-Group by FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate)
-)
-Select DR.riderId, computeFT.year as year, computeFT.month as month, (DR.deliveryFee * computeFT.completed + computeFT.completed * computeFT.basePay) as monthlyTotalSalary
-From DeliveryRiders DR
-Inner join computeFT using (riderId);
-
-/*PartTime*/
+-- For each month, each rider
+-- View monthlySalary, totalHoursWorked and totalDeliveries
 With computePT as (
-Select PT.riderId as riderId, PT.weeklyBasePay as basePay, extract(year from WD.workDate) as year, extract(month from WD.workDate) as month, Count(distinct extract(week from WD.workDate)) as totalNumOfWeeksWorked, Sum(WD.numCompleted) as complete
-From PartTime as PT
-Inner join WorkingDays WD using (riderId)
-where WD.numCompleted > 0
+Select PT.riderId as riderId, PT.weeklyBasePay as basePay, extract(year from WD.workDate) as year, extract(month from WD.workDate) as month, Count(distinct extract(week from WD.workDate)) as totalNumOfWeeksWorked, Sum(WD.numCompleted) as totalDeliveriesPerMonth
+From PartTime as PT Inner join WorkingDays WD using (riderId)
 Group by PT.riderId, extract(year from WD.workDate), extract(month from WD.workDate)
-)
-Select DR.riderId, computePT.year as year, computePT.month as month, computePT.complete * computePT.basePay + computePT.complete * DR.deliveryFee + computePT.totalNumOfWeeksWorked * computePt.basePay as monthlyPay
+),
+v1_1 as (
+Select DR.riderId as riderId, computePT.year as year, computePT.month as month, computePT.totalDeliveriesPerMonth * DR.deliveryFee + computePT.totalNumOfWeeksWorked * computePt.basePay as monthlySalary
 From DeliveryRiders DR
 Inner join computePT using (riderId)
-;
-
-
---View for each month, each rider, total deliveries
-SELECT d.riderId, sum(d.orderId), extract(month from o.orderDate), extract(year from o.orderDate)
+union
+SELECT riderId, year, month, deliveryFee * deliveriesPerMonth + basepay as monthlySalary
+FROM (
+	SELECT FT.riderId as riderId, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, DR.deliveryFee as deliveryFee, sum(WW.numCompleted) as deliveriesPerMonth, FT.monthlybasepay as basepay
+	FROM FullTime FT INNER JOIN DeliveryRiders DR on (FT.riderId = DR.riderId)
+	INNER JOIN WorkingWeeks WW on (FT.riderId = WW.riderId)
+	GROUP BY FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate), DR.deliveryFee, FT.monthlybasepay
+) AS Foo
+),
+v1_2 as (
+Select riderId, year, month, extract(hour from sum(interval)) as totalHoursWorked
+From (
+	SELECT PT.riderId as riderId, extract(year from WD.workDate) as year, extract(month from WD.workDate) as month, (WD.intervalEnd - WD.intervalStart) as interval
+	FROM PartTime PT Inner join WorkingDays WD using (riderId)
+) as Foo
+GROUP BY riderId, year, month
+union
+Select FT.riderId as riderId, extract(year from WW.workDate) as year, extract(month from WW.workDate) as month, count(shiftId) * 8 as totalHoursWorked
+From FullTime FT Inner join WorkingWeeks WW using (riderId)
+Group by FT.riderId, extract(year from WW.workDate), extract(month from WW.workDate)
+),
+v1_3 as (
+SELECT d.riderId as riderId, extract(year from o.orderDate) as year, extract(month from o.orderDate) as month, count(d.orderId) as totalDeliveries
 FROM Delivers d INNER JOIN Orders o ON (d.orderId = o.orderId)
-WHERE extract(month from o.orderDate) = $1 and extract(year from o.orderDate) = $2 and d.riderId = $3
 GROUP BY d.riderId, extract(month from o.orderDate), extract(year from o.orderDate)
+)
+select one.riderId, one.year, one.month, one.monthlySalary, two.totalHoursWorked, case
+	when three.totalDeliveries IS NULL then 0
+	else three.totalDeliveries
+end as totalDeliveries
+from v1_1 one natural join v1_2 two left join v1_3 three on (one.riderId = three.riderId) and (one.year = three.year) and (one.month = three.month)
+order by one.riderId, one.year, one.month
 ;
 
---View for each month, each delivery rider, average rating
-Select DR.riderId, EXTRACT(YEAR FROM O.orderDate) as year, EXTRACT(MONTH from O.orderDate) as month, avg(D.rating) as averageRatings
+-- For each month, each rider
+-- View averageRatings, numOfRatings and averageDeliveryTime
+with v2_1 as (
+Select DR.riderId as riderId, EXTRACT(YEAR FROM O.orderDate) as year, EXTRACT(MONTH from O.orderDate) as month, round(avg(D.rating)::numeric, 2) as averageRatings, count(D.rating) as numOfRatings
 From DeliveryRiders DR
 Left join Delivers D using (riderId)
 Left join Orders O using (orderId)
 Group by DR.riderId, extract(year FROM O.orderDate), extract(month FROM O.orderDate)
-Order by DR.riderId
+),
+v2_2 as (
+Select riderId, year, month, avg(interval) as averageDeliveryTime
+From (
+	SELECT D.riderId as riderId, extract(year from O.orderDate) as year, extract(month from O.orderDate) as month, (O.arrivalTimeAtDestination - O.departureTimeToDestination) + (O.arrivalTimeAtRestaurant - O.departureTimeToRestaurant) as interval
+	FROM Delivers D Inner join Orders O using (orderId)
+) as Foo
+Group by riderId, year, month
+)
+select one.riderId, one.year, one.month, one.averageRatings, one.numOfRatings, two.averageDeliveryTime
+from v2_1 one left join v2_2 two on (one.riderId = two.riderId) and (one.year = two.year) and (one.month = two.month)
+order by one.riderId, one.year, one.month
 ;
 
---View for each month, each delivery rider, average delivery time
-Select D.riderId, extract(year from O.orderDate) as year, extract(month from O.orderDate) as month, avg((extract(hour from o.arrivalTimeAtDestination – o.departureTimeToRestaurant) * 60 + extract(minute from o.arrivalTimeAtDestination – o.departureTimeToRestaurant))::decimal /60) as averageDeliveryTime
-From Delivers D
-Inner join Orders O using (orderId)
-Group by D.riderId, extract(year from O.orderDate), extract(month from O.orderDate)
-;
-
-
--- View total number of orders placed by each customers for each month
-SELECT extract(year from orderDate) as year, extract (month from orderDate) as month, O.customerId, COUNT(O.OrderId)
+-- View total number of orders and total cost of these orders placed by each customers for each month
+with v3_1 as (
+SELECT C.customerId as customerId, extract(year from orderDate) as year, extract (month from orderDate) as month, COUNT(O.OrderId) as numOrdersPlaced
+FROM Customers C left join Orders O on (C.customerId = O.customerId)
+GROUP BY C.customerId, extract(year from orderDate), extract (month from orderDate)
+),
+v3_2 as (
+SELECT extract(year from orderDate) as year, extract(month from orderDate) as month, customerId, SUM(totalCost) as totalCost
 FROM Orders O
 GROUP BY extract(year from orderDate), extract (month from orderDate), O.customerId
-ORDER BY O.customerId
+)
+select one.customerId, one.year, one.month, one.numOrdersPlaced, two.totalCost
+from v3_1 one left join v3_2 two on (one.customerId = two.customerId) and (one.year = two.year) and (one.month = two.month)
+order by one.customerId, one.year, one.month
 ;
 
--- View total cost of orders placed by each customer for each month
-SELECT extract(year from orderDate) as year, extract(month from orderDate) as month, customerId, SUM(totalCost)
-FROM Orders O
-WHERE O.customerId = $1
-GROUP BY extract(year from orderDate), extract (month from orderDate), O.customerId
-ORDER BY O.customerId
-;
 -- View restaurant all ratings for given restaurant
 SELECT O.restaurantId, Res.name, R.Rating, R.Review, Ord.customerId
 FROM Reviews R, OrderDetails O, Restaurants Res, Orders ord
 WHERE O.restaurantId = $1 and Res.restaurantId = $1 and O.OrderId = R.orderId and Ord.orderId = O.orderId
 ;
+
 -- View food item by popularity for given restaurant
 SELECT OD.itemName, SUM(OD.quantity), OD.restaurantId
 FROM OrderDetails OD
