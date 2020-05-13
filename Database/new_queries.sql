@@ -147,24 +147,21 @@ SET amtLeft = $3
 WHERE itemName = $1 AND restaurantId = $2
 ;
 -- View the past reviews for their restaurant
-SELECT O.orderDate, R.review, R.rating
-FROM Reviews R JOIN Orders O USING (orderId)
+SELECT O.orderDate, Rv.review, Rv.rating
+FROM Reviews Rv JOIN Orders O USING (orderId)
     JOIN OrderDetails OD USING (orderId)
-    JOIN Restaurants R USING (restaurantId)
+    JOIN Restaurants Rs USING (restaurantId)
     JOIN RestaurantStaff S USING (restaurantId)
 WHERE S.restStaffId = $1
 ;
 -- Create a restaurant promotion with discount %
 -- $1 = startDate, $2 = endDate, $3 = % discount, $4 = minimumAmtSpent
 -- $5 = restaurantId
-DECLARE newPromoId INTEGER
-BEGIN
-    INSERT INTO Promotions (type, startDate, endDate, discountPerc, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
-    RETURNING promotionId INTO newPromoId; --get the new promotionId
+INSERT INTO Promotions (type, startDate, endDate, discountPerc, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
+RETURNING promotionId INTO newPromoId; --get the new promotionId
 
-    INSERT INTO RestaurantPromotions (promotionId, restaurantId)
-    SELECT newPromoId, $5;
-END;
+INSERT INTO RestaurantPromotions (promotionId, restaurantId)
+SELECT newPromoId, $5;
 -- Create a restaurant promotion with fixed discount amount
 -- $1 = startDate, $2 = endDate, $3 = discount amount, $4 = minimumAmtSpent
 -- $5 = restaurantId
@@ -502,8 +499,36 @@ WHERE O.restaurantId = $1 and Res.restaurantId = $1 and O.OrderId = R.orderId an
 ;
 
 -- View food item by popularity for given restaurant
+SELECT OD.itemName, SUM(OD.quantity)
+FROM OrderDetails OD
+WHERE OD.restaurantId = $1
+GROUP BY OD.restaurantId, OD.itemName
+Order By  SUM(OD.quantity) desc, OD.itemName
+
+-- View restaurant all ratings for all restaurant
+SELECT restaurantId, orderId, Rating, Review, customerId
+FROM Reviews Inner join OrderDetails using (orderId) join Orders using (orderId)
+Order By restaurantId, orderId asc;
+
+-- View food item by popularity for all restaurant
 SELECT OD.itemName, SUM(OD.quantity), OD.restaurantId
 FROM OrderDetails OD
 GROUP BY OD.restaurantId, OD.itemName
 Order By  SUM(OD.quantity) desc, OD.itemName
+;
+
+-- View food item by most popular item for all restaurant
+WITH allItemsPopularity as
+    (SELECT OD.itemName, SUM(OD.quantity) as totalCount, OD.restaurantId
+     FROM OrderDetails OD
+     GROUP BY OD.restaurantId, OD.itemName
+     Order By  SUM(OD.quantity) desc, OD.itemName
+     ), maxOfAllItemsPopularity as
+    (SELECT MAX(totalCount) as maxTotalCount, restaurantId
+     FROM allItemsPopularity
+     GROUP BY restaurantID
+    )
+SELECT AIP.itemName, AIP.totalCount, AIP.restaurantId
+FROM allItemsPopularity AIP, maxOfAllItemsPopularity MOAIP
+WHERE AIP.restaurantId = MOAIP.restaurantId and AIP.totalCount = MOAIP.maxTotalCount
 ;
