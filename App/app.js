@@ -1,61 +1,37 @@
-var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config();
+const PORT = process.env.PORT || 3000
 
-/* -------Page Routers-------- */
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var aboutRouter = require('./routes/about');
-var selectRouter = require('./routes/select'); // database connect
-/* ---------------------------- */
+var flash = require('connect-flash');
+
+var passport = require("passport");
+var request = require('request');
+
+var session = require("express-session");
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-/* --------Pages---------- */
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/about', aboutRouter);
-app.use('/select', selectRouter); // database connect
-/* ---------------------------- */
+app.use(passport.initialize());
+app.use(passport.session());
 
-/* ----- Error Handler Section ----- */
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+var bodyParser = require('body-parser')
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+var path = require('path');
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-/* ---------------------------- */
+app.use('/public', express.static(__dirname + '/public'));
 
-/* --------Render Pages-------- */
-app.get('/', (req, res) => {
-	res.render('index');
-});
+app.use(flash());
+app.use(session({secret: 'keyboard cat'}))
+app.use(bodyParser());
+app.set('view engine', 'pug');
+app.set('view options', { layout: false });
 
-app.get('/about', (req, res) => {
-	res.render('about');
-});
-/* ---------------------------- */
 
-module.exports = app;
+require('./lib/routes.js')(app);
+
+app.listen(PORT);
+console.log('Node listening on port %s', PORT);

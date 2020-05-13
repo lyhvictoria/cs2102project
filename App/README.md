@@ -1,5 +1,10 @@
 # Step by step dev guide
 Hopefully it's correct :)
+##To run
+ 1. cd into 'cs2102project'
+ 2. Enter command: `npm install`
+ 3. cd into 'App', Enter command: `cd App`
+ 4. Enter command: `node app.js`
 ## To add a new web page
  1. In `App/app.js` , Add `var pageNameRouter = require('./routes/pageName');` to Page Routers Section
  2. In `App/app.js`, Add `app.use('/pageName', pageNameRouter)` to Pages Section.
