@@ -1,0 +1,40 @@
+{
+  "author": "cs2102project",
+  "name": "passport.js-template",
+  "description": "# Requirements & Set Up 1. NodeJS must be installed: https://nodejs.org/en/ 2. Clone this repo `git clone https://github.com/lyhvictoria/cs2102project.git` 3. Open command terminal and change directory to the `/App` folder using `cd <path>/App` replace path with the correct path. 4. Get the required node modules with `npm install` in terminal. These are included in the `.gitignore` file so it won't be pushed to the repo (cos its alot of stuff so a lotta space). So rmb to get em. 5. To enable us to connect to the database:",
+  "version": "0.0.1",
+  "homepage": "",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "engines": {
+    "node": "~8.9.4"
+  },
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "express-flash": "0.0.2",
+    "express-session": "^1.15.6",
+    "jQuery": "^1.7.4",
+    "jquery": "^3.3.1",
+    "mongodb": "^3.0.7",
+    "node-gyp": "^3.6.2",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.4.1",
+    "pug": "^2.0.0-rc.3",
+    "request": "^2.83.0",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "dotenv": "^4.0.0",
+    "nodemon": "^1.19.4"
+  },
+  "main": "App/app.js",
+  "directories": {
+    "lib": "App/lib"
+  },
+  "license": "ISC"
+}

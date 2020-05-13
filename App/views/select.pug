@@ -1,0 +1,17 @@
+include partials/header
+
+div.container
+	div.row
+		.col-md-4.offset-md-4#loginBox
+			div.account-wall
+			form(class='form-signin', action='/select', method='POST')
+				input(type='text', name='username' class='form-control', placeholder='Email/Username',required, autofocus)
+				button(class='btn btn-lg btn-primary btn-block', type='submit') Sign in
+				span.clearfix
+				
+			a(href='/', class='text-center new-account') Return to home
+
+
+					
+br
+include partials/footer
