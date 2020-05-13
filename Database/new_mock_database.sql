@@ -586,20 +586,20 @@ insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) 
 insert into Delivers (orderId, riderId, rating) values (5, 22, 5);
 
 
--- Create 5 Orders for restaurant 2 for month 4 year 2020 with restaurant promo id 6 
-insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (1, '2020-04-04', 'S100123', 0, 6, '11:59:20', '12:00:00', '12:05:00', '12:10:00', '12:15:00', 'Card');
+-- Create 5 Orders for restaurant 2 for month 4 year 2020 with restaurant promo id 7 
+insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (1, '2020-04-04', 'S100123', 0, 7, '11:59:20', '12:00:00', '12:05:00', '12:10:00', '12:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity) values (6, 2, 'Cream Of Chicken Soup', 1);
 
-insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (2, '2020-04-04', 'S100124', 0, 6, '11:59:15', '12:00:00', '12:06:00', '12:16:00', '12:20:00', 'Card');
+insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (2, '2020-04-04', 'S100124', 0, 7, '11:59:15', '12:00:00', '12:06:00', '12:16:00', '12:20:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity) values (7, 2, 'Cream Of Chicken Soup', 3);
 
-insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (3, '2020-04-04', 'S100159', 0, 6, '12:30:00', '13:00:00', '13:05:00', '13:10:00', '13:15:00', 'Card');
+insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (3, '2020-04-04', 'S100159', 0, 7, '12:30:00', '13:00:00', '13:05:00', '13:10:00', '13:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity) values (8, 2, 'Beef Burger', 3);
 
-insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (4, '2020-04-04', 'S100170', 0, 6, '15:10:00', '16:00:00', '16:05:00', '16:10:00', '16:15:00', 'Card');
+insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (4, '2020-04-04', 'S100170', 0, 7, '15:10:00', '16:00:00', '16:05:00', '16:10:00', '16:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity) values (9, 2, 'Fish And Chips', 3);
 
-insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (5, '2020-04-04', 'S100190', 0, 6, '18:00:00', '18:02:00', '18:05:00', '18:10:00', '18:15:00', 'Card');
+insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (5, '2020-04-04', 'S100190', 0, 7, '18:00:00', '18:02:00', '18:05:00', '18:10:00', '18:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity) values (10, 2, 'Fish And Chips', 3);
 
 -- Create 5 Reviews
