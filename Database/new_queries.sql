@@ -404,10 +404,12 @@ order by one.year, one.month
 ;
 
 -- View total orders for each delivery location area for each hour
+-- the date of of enquiry is $1 - in the format of 'YYYY-MM-DD'
 SELECT extract(hour from o.orderTime) as Hour, l.area as Area, COUNT(*) as TotalOrders
 FROM Orders o INNER JOIN CustomerLocations l ON (o.deliveryLocation = l.custLocation)
 WHERE o.orderDate = $1
 GROUP BY extract(hour from o.orderTime), l.custLocation
+ORDER BY extract(hour from o.orderTime)
 ;
 
 -- For each month, each rider

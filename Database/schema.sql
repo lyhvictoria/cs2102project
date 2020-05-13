@@ -402,7 +402,6 @@ DECLARE riderId_of_order INTEGER;
 
 Begin
 
-			RAISE NOTICE 'Hello';
 	SELECT orderTime into time_of_order
 	FROM Orders
 	WHERE orderId = OLD.orderId;
@@ -468,7 +467,6 @@ Begin
 		UPDATE WorkingWeeks
 		SET numCompleted = numCompleted - 1
 		WHERE riderId = OLD.riderId
-		AND workDate = date_of_order
 		AND workDate = date_of_order
 		AND time_of_order >= intervalStart
 		AND time_of_order <= intervalEnd;
