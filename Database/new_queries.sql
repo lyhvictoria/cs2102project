@@ -210,29 +210,28 @@ FROM Reviews Rv JOIN Orders O USING (orderId)
 WHERE S.restStaffId = $1
 ;
 
+
 -- Create a restaurant promotion with discount %
 -- $1 = startDate, $2 = endDate, $3 = % discount, $4 = minimumAmtSpent
 -- $5 = restaurantId
--- To be edited
-'
+with temp as (
 INSERT INTO Promotions (type, startDate, endDate, discountPerc, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
-RETURNING promotionId INTO newPromoId; --get the new promotionId
-
+RETURNING promotionId
+)
 INSERT INTO RestaurantPromotions (promotionId, restaurantId)
-SELECT newPromoId, $5;
-'
+SELECT promotionId, $5 FROM temp
+;
 
 -- Create a restaurant promotion with fixed discount amount
 -- $1 = startDate, $2 = endDate, $3 = discount amount, $4 = minimumAmtSpent
 -- $5 = restaurantId
-DECLARE newPromoId INTEGER
-BEGIN
-    INSERT INTO Promotions (type, startDate, endDate, discountAmt, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
-    RETURNING promotionId INTO newPromoId; --get the new promotionId
+with temp as (
+INSERT INTO Promotions (type, startDate, endDate, discountAmt, minimumAmtSpent) VALUES ('Restpromo', $1, $2, $3, $4)
+RETURNING promotionId
+)
+INSERT INTO RestaurantPromotions (promotionId, restaurantId)
+SELECT promotionId, $5 FROM temp;
 
-    INSERT INTO RestaurantPromotions (promotionId, restaurantId)
-    SELECT newPromoId, $5;
-END;
 
 -- Edit start and end date of restaurant promotion
 UPDATE Promotions
