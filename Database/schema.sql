@@ -522,6 +522,8 @@ Before update of restaurantId or insert on OrderDetails
 For each row
 Execute function check_all_one_restaurant();
 
+
+
 -- Check if the rider is availabile to deliver that orders
 'TOOOOOOOOOO BEEEEEEEEEEEE DONEEEEEEEEEEEEE'
 Create trigger available_rider_trigger

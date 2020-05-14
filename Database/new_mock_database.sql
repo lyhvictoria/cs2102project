@@ -586,7 +586,7 @@ insert into OrderDetails (orderId, restaurantId, itemName, quantity, orderCost) 
 insert into Delivers (orderId, riderId, rating) values (5, 22, 5);
 
 
--- Create 5 Orders for restaurant 2 for month 4 year 2020 with restaurant promo id 7 
+-- Create 5 Orders for restaurant 2 for month 4 year 2020 with restaurant promo id 7
 insert into Orders (customerID, orderDate, deliveryLocation, totalCost, promotionId, orderTime, departureTimeToRestaurant, arrivalTimeAtRestaurant, departureTimeToDestination, arrivalTimeAtDestination, paymentMode) values (1, '2020-04-04', 'S100123', 0, 7, '11:59:20', '12:00:00', '12:05:00', '12:10:00', '12:15:00', 'Card');
 insert into OrderDetails (orderId, restaurantId, itemName, quantity) values (6, 2, 'Cream Of Chicken Soup', 1);
 
