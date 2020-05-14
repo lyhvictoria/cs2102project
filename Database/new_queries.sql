@@ -74,7 +74,7 @@ GROUP BY Rs.name
 ;
 
 -- Make a review for their order
-INSERT INTO Reviews (reviewId, orderId, review, rating) VALUES ($1, $2, $3, $4);
+INSERT INTO Reviews (orderId, review, rating) VALUES ($1, $2, $3);
 
 -- Add a credit card for customer
 INSERT INTO CreditCards (customerId, cardNumber) VALUES ($1, $2);
@@ -301,8 +301,8 @@ FROM TopFiveFoodItems
 -- $1 = restStaffId
 WITH Duration AS (
     SELECT DISTINCT P.promotionId,
-                    (endDate::date - startDate::date)::NUMERIC as durationInDays,
-                    (endDate::date - startDate::date) * 24::NUMERIC as durationInHours
+                    (endDate::date - startDate::date) * 1.0 as durationInDays,
+                    (endDate::date - startDate::date) * 24.0 as durationInHours
     FROM RestaurantPromotions R JOIN Promotions P USING (promotionId)
     WHERE R.restaurantId = (
         SELECT restaurantId
@@ -338,9 +338,8 @@ SELECT DISTINCT D.promotionId,
         ELSE ROUND((OM.totalOrders/durationInHours), 2)
         END AS aveOrdersPerHour
 FROM Duration D LEFT JOIN OrdersMade OM using (promotionId)
-ORDER BY totalOrders DESC
+ORDER BY D.promotionid DESC
 ;
-
 
 
 
