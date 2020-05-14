@@ -52,7 +52,7 @@ WHERE Rs.name = $1
 GROUP BY Rs.name
 ;
 -- Make a review for their order
-INSERT INTO Reviews (reviewId, orderId, review, rating) VALUES ($1, $2, $3, $4);
+INSERT INTO Reviews (orderId, review, rating) VALUES ($1, $2, $3);
 
 -- Add a credit card for customer
 INSERT INTO CreditCards (customerId, cardNumber) VALUES ($1, $2);
@@ -229,9 +229,9 @@ FROM TopFiveFoodItems
 -- 2) average number of orders received during the promotion per day or hour
 WITH Duration AS (
     SELECT DISTINCT P.promotionId,
-                    (endDate::date - startDate::date) as durationInDays::NUMERIC,
-                    (endDate::date - startDate::date) * 24 as durationInHours::NUMERIC
-    FROM RestaurantPromotions R JOIN Promotions P USING (promotionId))
+                    (endDate::date - startDate::date) * 1.0 as durationInDays,
+                    (endDate::date - startDate::date) * 24.0 as durationInHours
+    FROM RestaurantPromotions R JOIN Promotions P USING (promotionId)
     WHERE R.restaurantId = $1
     ),
 
@@ -250,11 +250,12 @@ SELECT DISTINCT D.promotionId, totalOrders, durationInDays, durationInHours,
                     END AS avgOrdersPerDay,
                 CASE
                     WHEN durationInDays = 0 AND durationInHours = 0 THEN 0
-                    ELSE ROUND(OM.totalOrders/durationInHours), 2)
+                    ELSE ROUND(OM.totalOrders/durationInHours, 2)
                     END AS aveOrdersPerHour
 FROM Duration D LEFT JOIN OrdersMade OM using (promotionId)
-ORDER BY OM.orderId DESC
+ORDER BY D.promotionid DESC
 ;
+
 
 /* Delivery Rider Related Functionalities */
 
@@ -404,10 +405,12 @@ order by one.year, one.month
 ;
 
 -- View total orders for each delivery location area for each hour
+-- the date of of enquiry is $1 - in the format of 'YYYY-MM-DD'
 SELECT extract(hour from o.orderTime) as Hour, l.area as Area, COUNT(*) as TotalOrders
 FROM Orders o INNER JOIN CustomerLocations l ON (o.deliveryLocation = l.custLocation)
 WHERE o.orderDate = $1
 GROUP BY extract(hour from o.orderTime), l.custLocation
+ORDER BY extract(hour from o.orderTime)
 ;
 
 -- For each month, each rider
